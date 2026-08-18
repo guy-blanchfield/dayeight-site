@@ -1,0 +1,111 @@
+/* Adapted from the Josh W. Comeau reset */
+/* With Harry Roberts IMG reset */
+
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+/*
+    2. Remove default margin
+  */
+* {
+	margin: 0;
+}
+/*
+    Typographic tweaks!
+    3. Add accessible line-height
+    4. Improve text rendering
+  */
+body {
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+/*
+    5. Improve media defaults
+  */
+
+/* replace this with the Harry Roberts reset below */
+/* Using it on all the the other media elements, see how it goes */
+
+/*  
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+*/
+
+/* Harry Roberts img reset */
+/* Using it on all the the other media elements, see how it goes */
+img,
+picture,
+video,
+canvas,
+svg {
+	/* stops images overflowing the page */
+	max-width: 100%;
+
+	/* instead of display: block to stop the little bit of 
+    line-height under the image, */
+	/* use vertical-align: middle */
+	/* does exactly the same thing but without changing the
+    default inline-block behaviour of imgs */
+	vertical-align: middle;
+
+	/* height auto to preserve aspect-ratio */
+	height: auto;
+
+	/* font-style italic to differentiate alt text from body text */
+	/* for assistive tech or if the img doesn't load */
+	font-style: italic;
+
+	/* background-repeat no-repeat and background-size cover */
+	/* for handling the low-res placeholder version of the image */
+	/* background placeholder image is set inline */
+	/* or could be done with javascript */
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	/* shape-margin in case the image is floated */
+	/* and it's got fancy shape-outside stuff, clip paths etc */
+	shape-margin: 1rem;
+}
+
+/* end Harry Roberts img reset */
+
+/*
+    6. Remove built-in form typography styles
+  */
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+/*
+    7. Avoid text overflows
+  */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+/*
+    8. Create a root stacking context
+  */
+#root,
+#__next {
+	isolation: isolate;
+}

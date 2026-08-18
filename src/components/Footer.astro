@@ -1,0 +1,79 @@
+---
+// let's use trusty old astro-icon instead
+// don't forget to install it!
+// npx astro add astro-icon
+import { Icon } from "astro-icon/components";
+---
+
+<footer>
+	<section class="social-links">
+		<div class="social-links__social-links-container">
+			<ul class="social-links__social-links-list unstyled-list">
+				<li>
+					<a
+						href="https://www.linkedin.com/company/wearedayeight/"
+						target="_blank"
+						rel="noopener noreferrer external nofollow"
+						class="social-link"
+						><Icon name="social/linkedin-icon" class="social-icon" aria-hidden="true" /><span class="visually-hidden"
+							>LinkedIn</span
+						></a>
+				</li>
+				<li>
+					<a
+						href="https://www.instagram.com/wearedayeight/"
+						target="_blank"
+						rel="noopener noreferrer external nofollow"
+						class="social-link"
+						><Icon name="social/insta-icon" class="social-icon" aria-hidden="true" /><span class="visually-hidden"
+							>Instagram</span
+						></a>
+				</li>
+				<li>
+					<a
+						href="https://twitter.com/wearedayeight"
+						target="_blank"
+						rel="noopener noreferrer external nofollow"
+						class="social-link"
+						><Icon name="social/x-icon" class="social-icon" aria-hidden="true" /><span class="visually-hidden"
+							>X (formerly Twitter)</span
+						></a>
+				</li>
+			</ul>
+		</div>
+	</section>
+</footer>
+
+<style>
+	.social-links {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 1.5rem 0;
+		background-color: hsl(var(--accent2));
+	}
+
+	.social-links__social-links-list {
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		gap: 0.8rem;
+		/* border: 1px solid darkorange; */
+	}
+
+	.social-link {
+		transition: transform 125ms ease-in;
+		/* display: block so it can scale() */
+		display: block;
+		/* border: 1px solid fuchsia; */
+	}
+
+	.social-link:is(:hover, :focus-visible) {
+		transform: scale(1.2);
+		outline: none;
+	}
+
+	.social-icon {
+		font-size: 2rem;
+	}
+</style>
