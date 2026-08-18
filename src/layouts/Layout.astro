@@ -1,0 +1,62 @@
+---
+// **** Layout is html head, body and a wrapper div. All content goes in slot. ****
+// **** So we don't currently need any specific layouts, just a generic one that we can use for all pages ****
+
+import Header from "../components/Header.astro";
+import Main from "../components/Main.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<!-- <link rel="icon" type="image/svg+xml" href="/favicon-disc-accent.svg" /> -->
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta
+			name="description"
+			content="Day Eight is a creative communication agency helping people with branding, social media and PR."
+		/>
+		<title>Day Eight - Design | Social | Creative</title>
+	</head>
+	<body>
+		<div class="content-wrapper">
+			<Header />
+			<!-- put any css to control min-height and flex-grow of body, main, header and footer in global.css -->
+
+			<Main>
+				<slot />
+			</Main>
+			<Footer />
+		</div>
+		<noscript
+			>JavaScript is currently disabled. This site requires JavaScript to function correctly. Please enable JavaScript
+			in your browser.</noscript
+		>
+	</body>
+</html>
+
+<!-- inline style here to hide the content-wrapper until the rest of the css is loaded  -->
+<!-- remember, for this to work the rule to to override it needs an !important -->
+<style is:inline>
+	.content-wrapper {
+		visibility: hidden;
+	}
+</style>
+
+<style>
+	.content-wrapper {
+		/* set visibility to visible once this css has loaded */
+		/* !important here is necessary */
+		visibility: visible !important;
+
+		/* replaces stuff on body to get the content to stretch to fill the window */
+		/* vh fallback for browsers that don't support svh */
+		min-height: 100vh;
+		min-height: 100svh;
+
+		display: flex;
+		flex-direction: column;
+	}
+</style>
