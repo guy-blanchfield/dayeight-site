@@ -1,0 +1,368 @@
+---
+import { Icon } from "astro-icon/components";
+// import the built in Picture component
+// (might be worth investigating astro image tools
+// seems like a more advanced version of the built in stuff
+// with support for blur loading, art-direction etc
+// https://astro-imagetools-docs.vercel.app/en/components/Picture
+import { Picture } from "astro:assets";
+
+// fullscale images for <Picture>
+import graffitiImage from "../assets/images/graffiti-1x1-fullscale.jpg";
+import oceanImage from "../assets/images/ocean-fullscale.jpg";
+---
+
+<section class="hero">
+	<!-- order of formats is important -->
+	<!-- i.e. browser will choose the first format that it can display -->
+	<!-- so formats ['jpeg', 'webp'] will mean that the browser will -->
+	<!-- choose jpeg, bc it'll be the first <source> that it comes to -->
+
+	<!-- the class that we pass to <Picture> will be applied to the img element inside it -->
+	<!-- that's why it's called hero__img  -->
+
+	<!-- NB! default value of loading attr is lazy for the Picture component -->
+	<!-- we have to specify eager -->
+	<div class="picture-container graffiti">
+		<Picture
+			class="hero__img picture-image picture-image--hide"
+			src={graffitiImage}
+			formats={["webp", "jpeg"]}
+			widths={[240, 540, 720, 960, 1280]}
+			alt="Graffiti on a wall"
+			loading="eager"
+		/>
+		<!-- <Picture class="hero__img picture-image picture-image--hide" src={oceanImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280]} alt="Ocean waves from above" loading="eager"> -->
+	</div>
+
+	<div class="logo-and-strap">
+		<!-- put all the logo and strap in an inner container for the animation -->
+		<div class="logo-and-strap__container">
+			<div class="logo-and-strap__logo">
+				<Icon name="day-eight-logo" class="day-eight-logo" aria-hidden="true" />
+				<span class="visually-hidden">Day Eight</span>
+			</div>
+
+			<h1 class="logo-and-strap__strap">
+				Design <span class="text-accent">|</span> Social <span class="text-accent">|</span> Creative
+			</h1>
+
+			<div class="logo-and-strap__more-link">
+				<a href="#about-us">
+					<Icon name="down-arrow" class="down-arrow" aria-hidden="true" />
+
+					<span class="visually-hidden">Find out more about Day Eight</span>
+				</a>
+			</div>
+
+			<!-- Let's hide this link from assistive tech, bc we've already got it in the prev div -->
+			<!-- that means we also need to make it unfocusable with tabindex -1 -->
+			<a href="#about-us" class="logo-and-strap__invisible-link" aria-hidden="true" tabindex="-1"
+				>Find out more about Day Eight</a
+			>
+		</div>
+	</div>
+
+	<div class="picture-container ocean">
+		<Picture
+			class="hero__img picture-image picture-image--hide"
+			src={oceanImage}
+			formats={["webp", "jpeg"]}
+			widths={[240, 540, 720, 960, 1280]}
+			alt="Ocean waves from above"
+			loading="eager"
+		/>
+		<!-- <Picture class="hero__img picture-image picture-image--hide" src={graffitiImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280]} alt="Graffiti on a wall" loading="eager"> -->
+	</div>
+</section>
+
+<script>
+	// hide the picture images until they've loaded
+	// and set event listeners for their load events
+	const pictureImages: NodeListOf<HTMLImageElement> = document.querySelectorAll(".picture-image");
+	// console.log(pictureImages)
+
+	for (const pictureImage of pictureImages) {
+		// now applying the --hide class manually, otherwise there's
+		// a flash of alt text in firefox
+		// pictureImage.classList.add('picture-image--hide');
+		loadImage(pictureImage);
+	}
+
+	function loadImage(img: HTMLImageElement) {
+		//  check complete and naturalWidth first
+		//  if .complete AND naturalWidth is true, assume the image has already loaded
+		if (img.complete && img.naturalWidth) {
+			img.classList.add("picture-image--show");
+			// console.log("image already loaded")
+			return;
+		}
+		// otherwise add the eventlistener with
+		// a callback that adds the --show class
+		// and removes the --hide class
+		img.addEventListener("load", () => {
+			img.classList.remove("picture-image--hide");
+			img.classList.add("picture-image--show");
+			// console.log("image loaded!");
+		});
+	}
+</script>
+
+<style>
+	.hero {
+		display: flex;
+		/* direction column for mobile */
+		flex-direction: column;
+		/* width: 100%; */
+		/* min-height: 100vh; */
+		/* height: 100vh; */
+
+		background-color: hsl(var(--background-light));
+
+		/* margin-bottom so some of the bg image shows through */
+		margin-bottom: 5rem;
+	}
+
+	/* hide the pictures on mobile */
+	.hero__img,
+	.contact__img {
+		display: none;
+	}
+
+	/* desktop / laptop */
+	@media (min-width: 700px) {
+		.hero {
+			flex-direction: row;
+			height: 100vh;
+			margin-bottom: 0;
+		}
+
+		.hero > * {
+			/* we want each child to try to take up maximum space, that way they'll shrink uniformly */
+			flex-grow: 0;
+			flex-shrink: 1;
+			flex-basis: 100%;
+			/* border: 1px solid fuchsia; */
+			/* display: initial; */
+		}
+
+		.hero > :first-child(),
+		.hero > :last-child() {
+			display: block;
+		}
+
+		.hero__img {
+			display: initial;
+			width: 100%;
+			height: 100%;
+			/* border: 2px solid firebrick; */
+			object-fit: cover;
+		}
+
+		.picture-container {
+		}
+
+		.picture-image {
+			transition: opacity 250ms ease-in;
+		}
+
+		/* hide pictures while loading */
+		.picture-image--hide {
+			/* also make them invisible as well as transparent */
+			/* otherwise the alt text shows */
+			visibility: hidden;
+			opacity: 0;
+		}
+
+		.picture-image--show {
+			visibility: visible;
+			opacity: 1;
+		}
+
+		/* these classes are now on the container divs, not the picture element  */
+		.graffiti {
+			background-color: hsl(var(--accent));
+			/* we have to set background images this way
+				(for some reason we can't use url() - it errors, possibly a bug)
+				(the urls are set in the frontmatter and made available with <style define:vars)) 
+				it's either this or put them in an is:global style tag */
+			/* background-image: var(--graffitiLQIP); */
+		}
+
+		.ocean {
+			background-color: hsl(var(--accent3));
+			/* background-image: var(--oceanLQIP); */
+		}
+	}
+
+	.logo-and-strap__container {
+		display: flex;
+		flex-direction: column;
+		/* no gap because of the more-link, which counts as a flex item */
+		/* gap: 4rem; */
+		justify-content: center;
+		align-items: center;
+		/* padding: 5rem 0 4rem 0; */
+		padding: 4rem 0;
+		/* background-color: aqua; */
+
+		/* position here so we can position the more-link absolutely */
+		position: relative;
+
+		/* border: 1px solid fuchsia; */
+	}
+
+	/* the home page link */
+	.logo-and-strap a:focus-visible {
+		outline: none;
+	}
+
+	.logo-and-strap a:focus-visible .day-eight-logo {
+		color: hsl(var(--background-dark));
+	}
+
+	.day-eight-logo {
+		color: white;
+		/* astro-icons 1.1 now uses font-size instead of width/height */
+		font-size: 10rem;
+		padding: 0 1rem;
+	}
+
+	/* the h1 */
+	.logo-and-strap__strap {
+		color: hsl(var(--text-dark));
+		font-weight: normal;
+		word-spacing: 0.3rem;
+		width: max-content;
+		/* bc of the max-content, we need to make the 
+			font-smaller on mobile */
+		font-size: 1rem;
+		/* padding-top now, instead of gap */
+		padding-top: 4rem;
+
+		/* we now have to explicitly specify margin for h1 if it's inside a <section>, <article>, <aside>, or <nav> element */
+		/* (even though it's set by the * {} in reset.css) */
+		/* see: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements#specifying_a_uniform_font_size_for_h1 */
+		margin: 0;
+
+		/* border: 1px solid blueviolet; */
+	}
+
+	/* more link not required on mobile
+		this div includes the down arrow */
+	.logo-and-strap__more-link,
+	.logo-and-strap__invisible-link {
+		display: none;
+	}
+
+	/* we only really need the down arrow on desktop */
+	@media (min-width: 700px) {
+		/* this is the flex child of .hero (one of three) */
+		.logo-and-strap {
+			display: flex;
+			position: relative;
+			/* border: 1px solid blue; */
+			/* padding: 4rem 0; */
+			/* don't need padding because hero has height in desktop */
+			/* and flex will justify-content center */
+			/* it's not doing any harm but it's easier to see what's 
+				happening without it */
+			padding: 0;
+		}
+
+		/* this sits inside logo-and-strap */
+		/* and will hopefully animate beyond its flex item space */
+		.logo-and-strap__container {
+			/* so it fills available horizontal space */
+			flex-basis: 100%;
+
+			display: flex;
+			flex-direction: column;
+			/* no gap because of the more-link, which counts as a flex item */
+			/* gap: 4rem; */
+			justify-content: center;
+			align-items: center;
+			/* padding: 5rem 0 4rem 0; */
+			padding: 5rem 0;
+			/* background-color: aqua; */
+
+			/* position here so we can position the more-link absolutely */
+			/* and so we can animate it beyond its flex space / position */
+			/* position: relative; */
+			position: absolute;
+			/* top: 50%; */
+			left: 50%;
+			top: 0;
+			/* left: 0; */
+			width: 100%;
+			height: 100%;
+			transform: translate(-50%, 0%);
+
+			/* border: 1px solid fuchsia; */
+			/* background-color: aquamarine; */
+			background-color: hsl(var(--accent2));
+
+			/* for the background animated resize */
+			/* background-position: center; */
+			/* background-size: 100%; */
+			/* overflow-x: visible; */
+
+			/* transform-origin: center; */
+		}
+
+		.logo-and-strap__strap {
+			font-size: 1.2rem;
+			padding-left: 3rem;
+			padding-right: 3rem;
+			/* padding-top is set above (mobile) */
+			/* padding: 0 3rem; */
+			/* font-size: initial; */
+		}
+
+		.logo-and-strap__more-link {
+			display: block;
+			/* border: 1px solid tomato; */
+			position: absolute;
+			bottom: 2rem;
+			margin: 0 auto;
+			/* left: 50%;
+				transform: translateX(-50%); */
+		}
+
+		.logo-and-strap__more-link a {
+			outline: none;
+		}
+
+		.down-arrow {
+			/* display: block; */
+			/* astro-icons 1.1 now uses font-size instead of width/height */
+			font-size: 2rem;
+			color: hsl(var(--white) / 0.75);
+			opacity: 0;
+			/* border: 1px solid fuchsia; */
+			transition: opacity 250ms ease-in;
+		}
+
+		.logo-and-strap:hover .down-arrow {
+			opacity: 1;
+		}
+
+		a:is(:hover, :focus-visible) .down-arrow {
+			/* outline: none; */
+			opacity: 1;
+			color: hsl(var(--accent));
+		}
+
+		.logo-and-strap__invisible-link {
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			/* border: 1px solid hotpink; */
+			opacity: 0;
+			z-index: 100;
+		}
+	}
+</style>
