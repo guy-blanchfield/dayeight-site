@@ -1,0 +1,51 @@
+---
+// bg image paths have to be passed into <style> as variables
+// NB going with 960 because mobile height could be up to 900+ and bg image will stretch to cover the height
+const graffitiBgImageWebp = "url(/images/graffiti-960.webp)";
+const graffitiBgImage = "url(/images/graffiti-960.jpg)";
+---
+
+<main id="main-content">
+	<slot />
+</main>
+
+<style define:vars={{ graffitiBgImage, graffitiBgImageWebp }}>
+	/* put a pseudo before main where the background image goes (for mobile) 
+		because background-attachment: fixed won't work on iOS */
+	main::before {
+		content: "";
+		position: fixed;
+		top: 0;
+		left: 0;
+		/* vh should work here (100% resizes when the adress bar shows/hides, which is no good) 
+			we don't need svh because of position fixed apparently */
+		width: 100vw;
+		height: 100vh;
+		/* border: 1px solid fuchsia; */
+		background-image: var(--graffitiBgImage);
+
+		/* use image-set to specify alternative formats */
+
+		background-image: -webkit-image-set(var(--graffitiBgImageWebp), var(--graffitiBgImage));
+		background-image: image-set(
+			var(--graffitiBgImageWebp) type("image/webp"),
+			var(--graffitiBgImage) type("image/jpeg")
+		);
+
+		background-position: left top;
+		background-repeat: no-repeat;
+		background-size: cover;
+		/* background-size: auto 100%; */
+		/* lets have a bg color so it doesn't look shit while the image is loading */
+		background-color: hsl(var(--accent));
+		z-index: -1;
+	}
+
+	@media (min-width: 700px) {
+		main::before {
+			content: none;
+			/* need to specify background: none otherwise desktop still downloads the image */
+			background: none;
+		}
+	}
+</style>

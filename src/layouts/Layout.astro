@@ -10,6 +10,14 @@ import Footer from "../components/Footer.astro";
 // styles
 import "../styles/reset.css";
 import "../styles/global.css";
+
+// props
+export interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "" } = Astro.props;
 ---
 
 <html lang="en">
@@ -19,11 +27,9 @@ import "../styles/global.css";
 		<!-- <link rel="icon" type="image/svg+xml" href="/favicon-disc-accent.svg" /> -->
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<meta
-			name="description"
-			content="Day Eight is a creative communication agency helping people with branding, social media and PR."
-		/>
-		<title>Day Eight - Design | Social | Creative</title>
+		{description && <meta name="description" content={description} />}
+
+		<title>{title}</title>
 	</head>
 	<body>
 		<div class="content-wrapper">
@@ -51,6 +57,8 @@ import "../styles/global.css";
 </style>
 
 <style>
+	/* NB background images for mobile are in Main.astro, because the they're done with a ::before on <main> */
+
 	.content-wrapper {
 		/* set visibility to visible once this css has loaded */
 		/* !important here is necessary */
