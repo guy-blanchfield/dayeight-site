@@ -133,8 +133,15 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 	@media (min-width: 700px) {
 		.hero {
 			flex-direction: row;
-			height: 100vh;
+			height: calc(100vh - var(--header-height));
+			/* because position fixed essentially takes the element out of its context, it won't naturally fill the space */
+			/* so we have to tell it to take up the full width - is there a better way to do this? */
+			width: 100vw;
 			margin-bottom: 0;
+
+			position: fixed;
+			top: 0;
+			/* right: 0; */
 		}
 
 		.hero > * {

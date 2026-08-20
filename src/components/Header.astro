@@ -1,0 +1,59 @@
+---
+
+---
+
+<header>
+	<nav>
+		<ul>
+			<li class="main-nav__li--home"><a href="">Home</a></li>
+			<li><a href="">About</a></li>
+			<li><a href="">Work</a></li>
+			<li><a href="">Contact</a></li>
+		</ul>
+	</nav>
+</header>
+
+<style>
+	header {
+		background-color: hsl(var(--navy));
+		/* border: 1px solid fuchsia; */
+		/* padding: 2rem; */
+
+		position: sticky;
+		top: 0px;
+
+		display: flex;
+		align-items: center;
+
+		padding-inline: 2rem;
+
+		min-height: 5rem;
+	}
+
+	nav ul {
+		list-style: none;
+		display: flex;
+		gap: 1rem;
+		color: hsl(var(--white));
+	}
+
+	nav li {
+		/* border: 1px solid fuchsia; */
+	}
+
+	nav li:not(:last-of-type)::after {
+		content: "|";
+		/* display: block; */
+		margin-inline-start: 1rem;
+		color: hsl(var(--accent));
+	}
+
+	nav .main-nav__li--home {
+		color: hsl(var(--accent3));
+	}
+
+	nav li a {
+		color: hsl(var(--white));
+		text-decoration: none;
+	}
+</style>

@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HomeHero from "../components/HomeHero.astro";
+import Header from "../components/Header.astro";
+import Main from "../components/Main.astro";
 
 // import the built in Picture component
 // (might be worth investigating astro image tools
@@ -25,83 +27,102 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	title="Day Eight - Design | Social | Creative"
 	description="Day Eight is a creative communication agency helping people with branding, social media and PR."
 >
+	<!-- HomeHero is going to be position fixed so put it wherever seems most semantic in the document flow -->
 	<HomeHero />
 
-	<!-- not sure there's any benefit to doing this content as components at the moment -->
-	<!-- maybe to keep the email obfuscation stuff tidy? -->
+	<!-- wrapper div for the content minus the hero, so we can margin everything past the hero, which will have position: fixed -->
+	<div class="content-wrapper">
+		<Header />
+		<!-- put any css to control min-height and flex-grow of body, main, header and footer in global.css -->
 
-	<!-- About Us section -->
-	<section class="about-us" id="about-us">
-		<div>
-			<h2 class="about-us__heading serif">Just good people doing good stuff<span class="text-accent">.</span></h2>
-		</div>
+		<Main>
+			<!-- not sure there's any benefit to doing this content as components at the moment -->
+			<!-- maybe to keep the email obfuscation stuff tidy? -->
 
-		<div>
-			<div class="about-us__text">
-				<p>Passion led us here, and it's taught us valuable lessons along the way.</p>
+			<!-- Header (temp) -->
 
-				<p>
-					We've learned that the best work comes from caring deeply about what you do. Only when you immerse yourself in
-					something - a brand, a business, an idea - can you begin to understand what makes it matter, and when you
-					understand that, you can help other people see it too.
-				</p>
+			<!-- About Us section -->
+			<section class="about-us" id="about-us">
+				<div>
+					<h2 class="about-us__heading serif">Just good people doing good stuff<span class="text-accent">.</span></h2>
+				</div>
 
-				<p>That's what we do.</p>
+				<div>
+					<div class="about-us__text">
+						<p>Passion led us here, and it's taught us valuable lessons along the way.</p>
 
-				<p>
-					Through thoughtful branding, creative design, engaging content and meaningful communication, we help good
-					businesses build brands people remember.
-				</p>
+						<p>
+							We've learned that the best work comes from caring deeply about what you do. Only when you immerse
+							yourself in something - a brand, a business, an idea - can you begin to understand what makes it matter,
+							and when you understand that, you can help other people see it too.
+						</p>
 
-				<p>
-					We're designers, creatives, storytellers and decent humans. We care about the passion and the people behind
-					the brands we work with, because we know that to create work that truly connects, you have to believe in what
-					you're building.
-				</p>
-			</div>
-		</div>
-	</section>
+						<p>That's what we do.</p>
 
-	<!-- Contact section -->
-	<section class="contact">
-		<div>
-			<!-- need another div here to keep the heading and email -->
-			<!-- aligned right, but centred within outer container -->
-			<div class="contact__content">
-				<h2 class="contact__heading">
-					<a href="contact" class="contact__heading__link">Say hello<span class="text-accent2">.</span></a>
-				</h2>
+						<p>
+							Through thoughtful branding, creative design, engaging content and meaningful communication, we help good
+							businesses build brands people remember.
+						</p>
 
-				<!-- <span class="contact__email-span" set:html={emailObfLink} /> -->
-				<!-- add class hidden to hide the text until it's been decoded -->
+						<p>
+							We're designers, creatives, storytellers and decent humans. We care about the passion and the people
+							behind the brands we work with, because we know that to create work that truly connects, you have to
+							believe in what you're building.
+						</p>
+					</div>
+				</div>
+			</section>
 
-				<!-- Also: Accessibility audit: Background and foreground colors do not have a sufficient contrast ratio -->
-				<!-- might it be the hover colour? try without it -->
-				<a href={`mailto:${emailObf}`} class="eml-protected contact__email hidden flex-centred">{emailObf}</a>
-			</div>
-		</div>
+			<!-- Contact section -->
+			<section class="contact">
+				<div>
+					<!-- need another div here to keep the heading and email -->
+					<!-- aligned right, but centred within outer container -->
+					<div class="contact__content">
+						<h2 class="contact__heading">
+							<a href="contact" class="contact__heading__link">Say hello<span class="text-accent2">.</span></a>
+						</h2>
 
-		<div class="hello">
-			<!-- widths is the image widths we want astro to generate automatically,
+						<!-- <span class="contact__email-span" set:html={emailObfLink} /> -->
+						<!-- add class hidden to hide the text until it's been decoded -->
+
+						<!-- Also: Accessibility audit: Background and foreground colors do not have a sufficient contrast ratio -->
+						<!-- might it be the hover colour? try without it -->
+						<a href={`mailto:${emailObf}`} class="eml-protected contact__email hidden flex-centred">{emailObf}</a>
+					</div>
+				</div>
+
+				<div class="hello">
+					<!-- widths is the image widths we want astro to generate automatically,
 					 those values will also be added to the img element srcset e.g. 480w, 640w etc -->
-			<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
+					<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
 					 which image to use depending on media display size -->
-			<Picture
-				class="contact__img picture-image picture-image--hide"
-				src={helloImage}
-				formats={["webp", "jpeg"]}
-				widths={[240, 540, 720, 960, 1280, 1920]}
-				alt="Neon sign saying 'Hello'"
-				loading="lazy"
-			/>
-		</div>
-	</section>
+					<Picture
+						class="contact__img picture-image picture-image--hide"
+						src={helloImage}
+						formats={["webp", "jpeg"]}
+						widths={[240, 540, 720, 960, 1280, 1920]}
+						alt="Neon sign saying 'Hello'"
+						loading="lazy"
+					/>
+				</div>
+			</section>
+		</Main>
+	</div>
+	<!-- end content-wrapper -->
 </Layout>
 
 <script src="/src/js/decodeEmail.js"></script>
 <script src="/src/js/loadPicture.js"></script>
 
 <style>
+	/* content-wrapper */
+	.content-wrapper {
+		/* border: 1px solid fuchsia; */
+		margin-block-start: calc(100vh - var(--header-height));
+		position: relative;
+		z-index: 100;
+	}
 	/* ---------------------------- about us section ---------------------------- */
 
 	.about-us {

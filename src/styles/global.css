@@ -49,6 +49,9 @@ html {
 	--accent3: var(--teal);
 	--accent4: var(--orchid);
 	--accent3-dark: var(--darkteal);
+
+	/* sizing */
+	--header-height: 5rem;
 }
 
 /* ---------------- @fontface stuff ------------------- */
