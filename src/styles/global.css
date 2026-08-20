@@ -72,7 +72,7 @@ body {
 		Inter, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
 		"Helvetica Neue", sans-sans; */
 	/* font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif; */
-	scroll-behavior: smooth;
+	/* scroll-behavior: smooth; */
 }
 
 /* utility class to hide stuff */

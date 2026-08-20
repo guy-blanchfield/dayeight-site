@@ -116,6 +116,13 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 <script src="/src/js/loadPicture.js"></script>
 
 <style>
+	/* putting the scroll-padding-top here for the time being, maybe we'll only need it on the home page..? */
+	html {
+		/* take a bit of header-height so it overshoots a bit */
+		scroll-padding-top: calc(var(--header-height) - 3rem);
+		/* scroll-padding-top: var(--header-height); */
+		/* scroll-padding-top: 2.5rem; */
+	}
 	/* content-wrapper */
 	.content-wrapper {
 		/* border: 1px solid fuchsia; */
@@ -225,7 +232,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	}
 
 	.contact > :first-child {
-		padding: 3rem 3rem;
+		padding: 3rem;
 	}
 
 	.contact__heading {
@@ -267,11 +274,13 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			this causes a layout shift, so probably best go with 
 			max-width in characters */
 		/* width: max-content; */
+		/* tbh we really want it sized according the heading above the email button, so probably do it with rem */
 		width: 28ch;
+		width: 18rem;
 		/* bc of the max-content, we need to make the 
 			font-smaller on mobile (browser default seems to be 1.5rem?) */
 		/* which isn't the same as initial */
-		font-size: 0.9rem;
+		/* font-size: 0.9rem; */
 	}
 
 	.contact__email:is(:hover, :focus-visible) {
