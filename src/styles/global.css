@@ -11,6 +11,11 @@ html {
 	}
 }
 
+/* to stop the firefox bounce */
+:root {
+	overscroll-behavior: none;
+}
+
 /* custom properties */
 :root {
 	/* colours */
