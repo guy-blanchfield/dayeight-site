@@ -1,0 +1,257 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Main from "../components/Main.astro";
+
+import daydreamImage from "../assets/images/daydream-temp-lowres.jpg";
+
+// bg image paths have to be passed into <style> as variables
+const daydreamBgImage = "url(/images/daydream-temp-lowres.jpg)";
+
+import obfuscateEmail from "../js/obfuscateEmail";
+// don't know much about the second parameter of obfuscateEmail
+// other than it's used to generate a hex key, and in the example it's a 3 digit number
+const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
+---
+
+<Layout
+	title="Day Eight - Design | Social | Creative"
+	description="Day Eight is a creative communication agency helping people with branding, social media and PR."
+>
+	<Header />
+
+	<Main>
+		<section class="intro">
+			<div>
+				<!-- need another div here to keep the heading and email -->
+				<!-- aligned right, but centred within outer container -->
+				<div class="contactpage__content">
+					<h2 class="contactpage__heading serif">Helping ambitious businesses become impossible to ignore.</h2>
+
+					<p>Every great project starts with a conversation.</p>
+					<p>
+						Whether you've got a new business, a bold idea or a brand that's ready for its next chapter, we'd love to
+						hear about it.
+					</p>
+
+					<p>
+						Based in Yorkshire and working with good businesses wherever they are in the world, Day Eight helps
+						ambitious brands stand out through branding, design, social, content and creative communication.
+					</p>
+
+					<p>Pop us a message. Say hello. Let's see where it takes us.</p>
+				</div>
+			</div>
+
+			<div class="daydream">
+				<!-- widths is the image widths we want astro to generate automatically,
+					 those values will also be added to the img element srcset e.g. 480w, 640w etc -->
+				<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
+					 which image to use depending on media display size -->
+				<!-- <Picture class="contact__img picture-image picture-image--hide" src={daydreamImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280, 1920]} alt="Sign saying 'Don't give up the daydream" width="851" height="1146" loading="lazy" /> -->
+
+				<!-- <img src="/images/daydream-temp-lowres.jpg" width="425" height="573" alt=""> -->
+				<!-- <img src="/images/daydream-temp-lowres.jpg" alt=""> -->
+
+				<!-- Doing this as a background, at least for now -->
+			</div>
+		</section>
+
+		<section class="contactpage__contactsection">
+			<div class="contactsection__content">
+				<!-- contact section email and contact form -->
+				<!-- just the mailto for the time being -->
+
+				<!-- <div id="email" class="contactpage__email serif">e. <a href={`mailto:${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a></div> -->
+				<div id="email" class="contactpage__email serif">
+					e. <a href={`${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a>
+				</div>
+			</div>
+		</section>
+	</Main>
+</Layout>
+
+<script src="/src/js/decodeEmail.js"></script>
+
+<style define:vars={{ daydreamBgImage }}>
+	.intro {
+		background-color: hsl(var(--white));
+		display: flex;
+		flex-direction: column;
+	}
+
+	@media (min-width: 992px) {
+		.intro {
+			flex-direction: row;
+			justify-content: space-between;
+
+			min-height: 75vh;
+		}
+	}
+
+	.intro > * {
+		display: flex;
+	}
+
+	@media (min-width: 992px) {
+		.intro > * {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: 100%;
+		}
+		.intro > :first-child {
+			flex-basis: 200%;
+		}
+	}
+
+	@media (min-width: 992px) {
+		.daydream {
+			background-image: var(--daydreamBgImage);
+			background-position: left top;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+	}
+
+	.contactpage__content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		/* padding: 3rem 3rem; */
+		gap: 1rem;
+
+		padding-block: 2rem;
+		padding-inline: 1.2rem;
+
+		/* border: 1px solid pink; */
+	}
+
+	@media (min-width: 992px) {
+		.contactpage__content {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			/* padding: 3rem 3rem; */
+			gap: 1.5rem;
+
+			padding-block: 2rem;
+			padding-inline-start: 4rem;
+			padding-inline-end: 4rem;
+
+			/* border: 1px solid pink; */
+		}
+	}
+
+	.contactpage__heading {
+		font-size: 2rem;
+		font-weight: 100;
+		line-height: 1.2;
+		color: hsl(var(--accent));
+		max-width: 40ch;
+		text-wrap: balance;
+
+		/* margin-block-start: 3rem; */
+		margin-block-end: 1.5rem;
+	}
+
+	@media (min-width: 992px) {
+		.contactpage__heading {
+			font-size: 3rem;
+			/* font-weight: 100; */
+			/* line-height: 1.2; */
+			/* color: hsl(var(--accent)); */
+			max-width: 20ch;
+			/* text-wrap: balance; */
+
+			/* margin-block-start: 3rem; */
+			margin-block-end: 1.5rem;
+		}
+	}
+
+	.contactpage__content p {
+		color: hsl(var(--greynavy));
+		/* color: #000; */
+		/* font-weight: lighter; */
+		/* font-size: 1.1rem; */
+		/* line-height: 1.4; */
+		max-width: 80ch;
+		text-wrap: balance;
+		line-height: 1.4;
+
+		/* separate font-family for this so we can use lighter? */
+		/* will need checking on other systems though */
+	}
+
+	@media (min-width: 992px) {
+		.contactpage__content p {
+		}
+	}
+
+	.contactpage__content p a {
+		text-decoration: none;
+		color: hsl(var(--accent4));
+		/* color: hsl(var(--babyblue)); */
+		/* line-height: 2; */
+	}
+
+	.contactpage__content p a:is(:hover, :focus-visible) {
+		text-decoration: underline;
+		text-underline-offset: 0.33rem;
+		/* color: hsl(var(--accent)); */
+		/* color: hsl(var(--babyblue)); */
+	}
+
+	.contactpage__contactsection {
+		background-color: hsl(var(--background-dark));
+		display: flex;
+		align-items: center;
+
+		/* border: 3px solid cyan; */
+	}
+
+	/* contact section content */
+	.contactsection__content {
+		padding-block: 2rem;
+		padding-inline-start: 1.3rem;
+		padding-inline-end: 1rem;
+	}
+
+	@media (min-width: 992px) {
+		.contactsection__content {
+			padding-block: 2rem;
+			padding-inline-start: 4rem;
+			padding-inline-end: 2rem;
+		}
+	}
+
+	/* email is the div */
+	.contactpage__email {
+		font-size: 1.3rem;
+		color: hsl(var(--babyblue));
+	}
+	/* mailto is the link */
+	.contactpage__mailto {
+		color: hsl(var(--white));
+		text-decoration: none;
+	}
+	.contactpage__mailto:is(:hover, :focus-visible) {
+		/* color: hsl(var(--orchid)); */
+		text-decoration: underline;
+		text-underline-offset: 0.5rem;
+	}
+
+	@media (min-width: 992px) {
+		/* email is the div */
+		.contactpage__email {
+			font-size: 2rem;
+		}
+		/* mailto is the link */
+		.contactpage__mailto {
+		}
+		.contactpage__mailto:is(:hover, :focus-visible) {
+			/* color: hsl(var(--orchid)); */
+			/* text-decoration: underline; */
+			text-underline-offset: 1rem;
+		}
+	}
+</style>

@@ -12,8 +12,10 @@ html {
 }
 
 /* to stop the firefox bounce */
+/* see: https://jeffbridgforth.com/fix-scroll-bounce-with-css-some-gotchas/ */
 :root {
 	overscroll-behavior: none;
+	overflow-x: hidden; /* or you could use overflow-x: clip */
 }
 
 /* custom properties */
@@ -24,7 +26,18 @@ html {
 	--darklavender: 273 25% 52%;
 	--teal: 182 68% 44%;
 	--orchid: 300 35% 46%;
-	--babyblue: 195 42% 66%;
+
+	--babyblue: 188 55% 55%;
+
+	/* options for --babyblue */
+	/*  
+	color: #17C1D4;
+	color: #3AD3DE;
+	color: #3EB6C8;
+	color: #4FCADD;
+	color: hsl(188, 68%, 59%);
+	*/
+
 	/* effectively black */
 	--darknavy: 186 40% 15%;
 	--white: 0 0% 100%;
@@ -208,4 +221,31 @@ it's doable, but difficult to test */
 .picture-image--show {
 	visibility: visible;
 	opacity: 1;
+}
+
+/* button shaped element */
+.content__button {
+	display: flex;
+	justify-content: center;
+	padding: 0.25rem;
+	/* probably set width on buttons with modifiers or according to context */
+	/* padding-inline: 2rem; */
+	border-radius: 2rem;
+
+	/* border: 1px solid red; */
+}
+
+.content__button--purple {
+	color: hsl(var(--white));
+	background-color: hsl(var(--darklavender));
+}
+
+.content__button--green {
+	color: hsl(var(--white));
+	background-color: hsl(var(--lime));
+}
+
+.content__button--teal {
+	color: hsl(var(--white));
+	background-color: hsl(var(--teal));
 }
