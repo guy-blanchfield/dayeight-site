@@ -161,13 +161,23 @@ stolen from https://gist.github.com/ffoodd/000b59f431e3e64e4ce1a24d5bb36034 */
 /* otherwise we have to update every heading class */
 /* everytime we decide to change the font */
 
-.serif {
+.serif-fancy {
 	/* font-family: "Butler", "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif; */
 	/* try Antique font stack to be closer to Butler */
 	font-family:
 		"Butler", Superclarendon, "Bookman Old Style", "URW Bookman", "URW Bookman L", "Georgia Pro", Georgia, serif;
 	font-weight: normal;
 }
+
+/* system stack serif (not Butler) */
+.serif-regular {
+	font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
+	font-weight: normal;
+}
+
+/* alternative serif stacks */
+/* Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif; */
+/* Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol; */
 
 /* see here to provide different styles for loaded font and fallback font: */
 /* https://css-tricks.com/how-to-load-fonts-in-a-way-that-fights-fout-and-makes-lighthouse-happy/ */
@@ -186,6 +196,25 @@ it's doable, but difficult to test */
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.flex-columns {
+	display: flex;
+	flex-direction: column;
+}
+
+@media (min-width: 992px) {
+	.flex-columns {
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+
+	.flex-columns > * {
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 100%;
+		/* border: 1px solid yellow; */
+	}
 }
 
 .unstyled-list {
@@ -227,10 +256,11 @@ it's doable, but difficult to test */
 .content__button {
 	display: flex;
 	justify-content: center;
-	padding: 0.25rem;
+	align-items: center;
+	/* bit of padding so the text apears a bit more vertically centred */
+	/* padding-block: 0.2rem; */
 	/* probably set width on buttons with modifiers or according to context */
-	/* padding-inline: 2rem; */
-	border-radius: 2rem;
+	border-radius: 3rem;
 
 	/* border: 1px solid red; */
 }

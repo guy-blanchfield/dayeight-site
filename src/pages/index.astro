@@ -44,7 +44,9 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			<!-- About Us section -->
 			<section class="about-us" id="about-us">
 				<div>
-					<h2 class="about-us__heading serif">Just good people doing good stuff<span class="text-accent">.</span></h2>
+					<h2 class="about-us__heading serif-fancy">
+						Just good people doing good stuff<span class="text-accent">.</span>
+					</h2>
 				</div>
 
 				<div>
@@ -274,8 +276,8 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			max-width in characters */
 		/* width: max-content; */
 		/* tbh we really want it sized according the heading above the email button, so probably do it with rem */
-		width: 28ch;
-		width: 18rem;
+		/* width: 28ch; */
+		min-width: min(18rem, 100%);
 		/* bc of the max-content, we need to make the 
 			font-smaller on mobile (browser default seems to be 1.5rem?) */
 		/* which isn't the same as initial */
@@ -299,7 +301,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		.contact {
 			display: flex;
 			/* default flex-wrap is nowrap!!! */
-			flex-wrap: wrap;
+			/* flex-wrap: wrap; */
 			width: 100%;
 			background-color: hsl(var(--white));
 			/* remove margin-bottom for desktop in case we put the gap under this one */

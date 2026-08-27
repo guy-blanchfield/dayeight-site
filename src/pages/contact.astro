@@ -26,7 +26,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 				<!-- need another div here to keep the heading and email -->
 				<!-- aligned right, but centred within outer container -->
 				<div class="contactpage__content">
-					<h2 class="contactpage__heading serif">Helping ambitious businesses become impossible to ignore.</h2>
+					<h2 class="contactpage__heading serif-fancy">Helping ambitious businesses become impossible to ignore.</h2>
 
 					<p>Every great project starts with a conversation.</p>
 					<p>
@@ -63,9 +63,20 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 				<!-- just the mailto for the time being -->
 
 				<!-- <div id="email" class="contactpage__email serif">e. <a href={`mailto:${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a></div> -->
-				<div id="email" class="contactpage__email serif">
+				<div id="email" class="contactpage__email serif-fancy">
 					e. <a href={`${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a>
 				</div>
+
+				<form action="">
+					<div class="input-and-label"><input type="text" name="" id="" /></div>
+					<div class="input-and-label"><input type="text" name="" id="" /></div>
+
+					<div class="textarea-and-label">
+						<textarea name="" id=""></textarea>
+					</div>
+
+					<button class="content__button">Send.</button>
+				</form>
 			</div>
 		</section>
 	</Main>

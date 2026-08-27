@@ -7,13 +7,19 @@ import { Picture } from "astro:assets";
 
 // fullscale images for <Picture>
 import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
+import artofdyeingImage from "../assets/images/artofdyeing.png";
+import howwilltodayImage from "../assets/images/howwilltoday.png";
+import weseeyouImage from "../assets/images/weseeyou.png";
+
+// the intro section image, done as background
+const ilikeyouBgImage = "url(/images/ilikeyou-temp-lowres.jpg)";
 // import daydreamImage from "../../public/images/daydream-temp-lowres.jpg";
 // import { Image } from "astro:assets";
 ---
 
 <Layout
 	title="Day Eight - Design | Social | Creative"
-	description="Day Eight is a creative communication agency helping people with branding, social media and PR."
+	description="Branding and Graphic Design Studio in Yorkshire. Making ambitious businesses look as good as they are through branding, design, social media and digital."
 >
 	<!-- wrapper div for the content minus the hero, so we can margin everything past the hero, which will have position: fixed -->
 	<div class="content-wrapper">
@@ -27,17 +33,17 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 			<!-- Header (temp) -->
 
 			<!-- About Us section -->
-			<section class="intro two-column-flex">
+			<section class="intro flex-columns">
 				<div>
 					<!-- need another div here to keep the heading and email -->
 					<!-- aligned right, but centred within outer container -->
 					<div class="section__content">
-						<h1 class="section__heading serif">
+						<h1 class="section__heading serif-fancy">
 							Day Eight is an innovative creative studio specialising in branding, design, social content &amp; creative
 							communication.
 						</h1>
 
-						<div class="content__button serif content__button--purple">Say hello.</div>
+						<div class="content__button serif-regular content__button--purple">Say hello.</div>
 					</div>
 				</div>
 
@@ -46,12 +52,12 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 				</div>
 			</section>
 
-			<section class="builtonpassion two-column-flex">
+			<section class="builtonpassion flex-columns">
 				<div>
 					<!-- need another div here to keep the heading and email -->
 					<!-- aligned right, but centred within outer container -->
 					<div class="section__content">
-						<h2 class="section__heading serif">Built on passion.</h2>
+						<h2 class="section__heading serif-fancy">Built on passion.</h2>
 
 						<p>
 							We help ambitious businesses build brands that people remember through thoughtful branding, creative
@@ -84,7 +90,7 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 						/>
 						<!-- <Image src={carolineImage} alt="" /> -->
 
-						<q class="section__quote serif">
+						<q class="section__quote serif-fancy">
 							Day Eight was built on the belief that the best work comes from caring deeply about what you do.
 						</q>
 
@@ -93,9 +99,9 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 				</div>
 			</section>
 
-			<section class="letscreate">
-				<div class="section__content">
-					<h2 class="section__heading serif">Let's create.</h2>
+			<section class="letscreate flex-centred">
+				<div class="section__content flex-centred">
+					<h2 class="section__heading serif-fancy">Let's create.</h2>
 
 					<p>Day Eight is an independent studio based in the creative hub of Saltaire, West Yorkshire.</p>
 
@@ -104,27 +110,45 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 						impression, grow and connect with the people that matter most.
 					</p>
 
-					<div class="content__button content__button--green">See our work.</div>
+					<div class="content__button serif-regular content__button--green">See our work.</div>
 				</div>
 			</section>
 
-			<section class="picture-tryptich"></section>
+			<section class="picture-section flex-columns">
+				<Picture
+					class="secondary-content__img picture-image picture-image--hide"
+					src={howwilltodayImage}
+					formats={["webp", "jpeg"]}
+					widths={[240, 540, 720, 960, 1280, 1920]}
+					alt="Hallstone branding"
+					loading="lazy"
+				/>
+
+				<Picture
+					class="secondary-content__img picture-image picture-image--hide"
+					src={artofdyeingImage}
+					formats={["webp", "jpeg"]}
+					widths={[240, 540, 720, 960, 1280, 1920]}
+					alt="How will today change tomorrow promotional material"
+					loading="lazy"
+				/>
+
+				<Picture
+					class="secondary-content__img picture-image picture-image--hide"
+					src={weseeyouImage}
+					formats={["webp", "jpeg"]}
+					widths={[240, 540, 720, 960, 1280, 1920]}
+					alt="Caroline, founder of Day Eight"
+					loading="lazy"
+				/>
+			</section>
 		</Main>
 	</div></Layout
 >
 
-<style>
-	.two-column-flex {
-		display: flex;
-		flex-direction: column;
-	}
+<style define:vars={{ ilikeyouBgImage }}>
+	/* flex-columns stuff is in global.css */
 
-	@media (min-width: 992px) {
-		.two-column-flex {
-			flex-direction: row;
-			flex-wrap: nowrap;
-		}
-	}
 	.intro {
 		background-color: hsl(var(--navy));
 	}
@@ -135,33 +159,34 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 		}
 	}
 
-	.two-column-flex > * {
+	/* probably don't want this padding in global, but it will apply to all the flex-column sections */
+	.flex-columns {
+		/* padding-block: 2rem; */
+	}
+
+	.flex-columns > * {
 		display: flex;
+		padding-block: 2rem;
 	}
 
 	@media (min-width: 992px) {
-		.two-column-flex > * {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: 100%;
-			/* border: 1px solid yellow; */
-			padding-block: 2rem;
-		}
-
-		.two-column-flex > :first-child {
-			display: flex;
+		:is(.intro, .builtonpassion) > :first-child {
 			flex-direction: column;
 			justify-content: center;
 		}
-	}
 
-	.intro > :first-child {
-		flex-basis: 200%;
+		.intro > :first-child {
+			flex-basis: 200%;
+		}
 	}
 
 	.builtonpassion {
 		background-color: hsl(var(--babyblue));
 	}
+
+	/* .letscreate {
+		padding-block: 2rem;
+	} */
 
 	@media (min-width: 992px) {
 		.ilikeyou {
@@ -176,21 +201,20 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		/* don't set align rules here */
 		gap: 1rem;
 
 		padding-block: 2rem;
 		padding-inline: 1.2rem;
 
-		border: 1px solid pink;
+		/* border: 1px solid pink; */
 	}
 
 	@media (min-width: 992px) {
 		.section__content {
 			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: start;
-			/* padding: 3rem 3rem; */
+			/* don't set align rules here */
+			/* align-items: start; */
 			gap: 1.5rem;
 
 			padding-block: 2rem;
@@ -203,6 +227,22 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 	.intro .section__content {
 		min-height: 88%;
 		justify-content: space-between;
+		align-items: start;
+	}
+
+	.builtonpassion .section__content {
+		align-items: start;
+	}
+
+	.letscreate .section__content {
+		/* max-width: 100ch; */
+		/* text-wrap: balance; */
+		/* align-items: center; */
+		text-align: center;
+		/* two column sections have got padding-block 2rem set with * on their direct children */
+		/* but letscreate doesn't have those child columns so probably best to put margin-block on the section content */
+		/* rather than creating a ruleset for letscreate */
+		margin-block: 2rem;
 	}
 
 	.section__secondary-content {
@@ -244,6 +284,10 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 		font-size: 1rem;
 	}
 
+	/* :is(.intro, .builtonpassion, .letscreate) .content__button {
+        
+    } */
+
 	/* specifically for the button in the .intro section */
 	/* (content__button styles are in global.css) */
 	.intro .content__button {
@@ -252,9 +296,32 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 		/* border: 1px solid fuchsia; */
 	}
 
+	/* specifically for the button in the .letscreate section */
+	.letscreate .content__button {
+		font-size: 2.5rem;
+		min-width: 75%;
+		margin-block-start: 1rem;
+		/* border: 1px solid fuchsia; */
+	}
+
+	.picture-section {
+		height: 38rem;
+		overflow: hidden;
+		gap: 1rem;
+		padding-block-end: 1rem;
+	}
+
+	.picture-section > * {
+		padding: 0;
+	}
+
+	.picture-section img {
+		object-fit: cover;
+	}
+
 	.section__image {
 		/* border: 1px solid fuchsia; */
-		background-color: red;
+		/* background-color: red; */
 	}
 
 	.caroline-image {
@@ -266,14 +333,14 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 		font-size: 2.75rem;
 		font-weight: lighter;
 		line-height: 1.2;
-		color: hsl(var(--white));
+		/* color: hsl(var(--white)); */
 		max-width: 25ch;
 		text-wrap: balance;
 
 		/* margin-block-start: 3rem; */
 		margin-block-end: 1.5rem;
 
-		border: 1px solid yellow;
+		/* border: 1px solid yellow; */
 	}
 
 	/* section specific headings */
@@ -284,6 +351,10 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 	.builtonpassion .section__heading {
 		color: hsl(var(--navy));
 		/* font-size: 2.75rem; */
+	}
+
+	.letscreate .section__heading {
+		color: hsl(var(--navy));
 	}
 
 	@media (min-width: 992px) {
@@ -317,6 +388,10 @@ import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
 	/* section specific p styles */
 	.builtonpassion .section__content p {
 		color: hsl(var(--white));
+	}
+
+	.letscreate .section__content p {
+		color: hsl(var(--navy));
 	}
 
 	@media (min-width: 992px) {
