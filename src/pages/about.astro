@@ -6,13 +6,17 @@ import Main from "../components/Main.astro";
 import { Picture } from "astro:assets";
 
 // fullscale images for <Picture>
-import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
+// import carolineImage from "../assets/images/caroline-temp-lowres-opacity75.png";
+import carolineImage from "../assets/images/day-eight-caroline.png";
 import artofdyeingImage from "../assets/images/artofdyeing.png";
 import howwilltodayImage from "../assets/images/howwilltoday.png";
 import weseeyouImage from "../assets/images/weseeyou.png";
 
 // the intro section image, done as background
-const ilikeyouBgImage = "url(/images/day-eight-likes-you.jpg)";
+// prettier-ignore
+const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
+// prettier-ignore
+// const ilikeyouBgImage = 'url(/images/ilikeyou-temp-lowres.jpg)';
 // import daydreamImage from "../../public/images/daydream-temp-lowres.jpg";
 // import { Image } from "astro:assets";
 ---
@@ -77,6 +81,12 @@ const ilikeyouBgImage = "url(/images/day-eight-likes-you.jpg)";
 				<div class="section__secondary-content">
 					<!-- extra div here just in case -->
 					<div>
+						<q class="section__quote serif-fancy">
+							Day Eight was built on the belief that the best work comes from caring deeply about what you do.
+						</q>
+
+						<p class="section__quote-attr">Caroline - Founder, Day Eight</p>
+
 						<!-- caroline picture -->
 						<Picture
 							class="secondary-content__img picture-image picture-image--hide caroline-image"
@@ -88,13 +98,6 @@ const ilikeyouBgImage = "url(/images/day-eight-likes-you.jpg)";
 							width="150"
 							height="150"
 						/>
-						<!-- <Image src={carolineImage} alt="" /> -->
-
-						<q class="section__quote serif-fancy">
-							Day Eight was built on the belief that the best work comes from caring deeply about what you do.
-						</q>
-
-						<p class="section__quote-attr">Caroline - Founder, Day Eight</p>
 					</div>
 				</div>
 			</section>
@@ -326,7 +329,7 @@ const ilikeyouBgImage = "url(/images/day-eight-likes-you.jpg)";
 
 	.caroline-image {
 		width: 8rem;
-		margin-block-end: 1rem;
+		margin-block-start: 1rem;
 	}
 
 	.section__heading {

@@ -27,7 +27,7 @@ html {
 	--teal: 182 68% 44%;
 	--orchid: 300 35% 46%;
 
-	--babyblue: 188 55% 55%;
+	--babyblue: 189 56% 58%;
 
 	/* options for --babyblue */
 	/*  
@@ -36,6 +36,18 @@ html {
 	color: #3EB6C8;
 	color: #4FCADD;
 	color: hsl(188, 68%, 59%);
+	color: #58BFD0;
+	color: hsl(189, 56%, 58%);
+	*/
+
+	--pink: 338 75% 63%;
+	/* --pink: 336 75% 60%; */
+
+	/* options for --pink */
+	/* 
+	color: #F26D97
+	color: #EA5B94 *
+	color: #F94591
 	*/
 
 	/* effectively black */
@@ -45,6 +57,7 @@ html {
 	/* desaturated navy for text out of white */
 	--greynavy: 195 50% 14%;
 	--lightgreynavy: 195 50% 25%;
+	--lightergreynavy: 195 10% 50%;
 
 	/* darker teal for accessible contrast */
 	/* --darkteal: 182 68% 23%; */
@@ -252,6 +265,27 @@ it's doable, but difficult to test */
 	opacity: 1;
 }
 
+/* remove default styles for button */
+/* From Andy Bell - https://css-tricks.com/overriding-default-button-styles/ */
+button {
+	display: inline-block;
+	border: none;
+	/* padding: 1rem 2rem; */
+	margin: 0;
+	text-decoration: none;
+	background: hsl(var(--darklavender));
+	color: hsl(var(--white));
+	font-family: sans-serif;
+	font-size: 1rem;
+	cursor: pointer;
+	text-align: center;
+	transition:
+		background 250ms ease-in-out,
+		transform 150ms ease;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
 /* button shaped element */
 .content__button {
 	display: flex;
@@ -278,4 +312,9 @@ it's doable, but difficult to test */
 .content__button--teal {
 	color: hsl(var(--white));
 	background-color: hsl(var(--teal));
+}
+
+.content__button--pink {
+	color: hsl(var(--white));
+	background-color: hsl(var(--pink));
 }

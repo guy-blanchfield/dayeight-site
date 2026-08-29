@@ -6,7 +6,9 @@ import Main from "../components/Main.astro";
 import daydreamImage from "../assets/images/daydream-temp-lowres.jpg";
 
 // bg image paths have to be passed into <style> as variables
-const daydreamBgImage = "url(/images/day-eight-daydream.png)";
+const daydreamBgImage = "url(/images/day-eight-daydream-960.jpg)";
+const mapBgImage = "url(/images/day-eight-yorkshire-map.svg)";
+// const daydreamBgImage = 'url(/images/daydream-temp-lowres.jpg)';
 
 import obfuscateEmail from "../js/obfuscateEmail";
 // don't know much about the second parameter of obfuscateEmail
@@ -63,19 +65,31 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 				<!-- just the mailto for the time being -->
 
 				<!-- <div id="email" class="contactpage__email serif">e. <a href={`mailto:${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a></div> -->
-				<div id="email" class="contactpage__email serif-fancy">
+				<!-- <div id="email" class="contactpage__email serif-fancy">
 					e. <a href={`${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a>
-				</div>
+				</div> -->
 
-				<form action="">
-					<div class="input-and-label"><input type="text" name="" id="" /></div>
-					<div class="input-and-label"><input type="text" name="" id="" /></div>
+				<h2 class="contactsection__heading serif-regular">Say hello.</h2>
 
-					<div class="textarea-and-label">
-						<textarea name="" id=""></textarea>
+				<form action="" class="contactsection__form">
+					<!-- group the inputs is their own div -->
+					<div class="form__inputs">
+						<div class="input-and-label">
+							<label for="name">Name</label>
+							<input type="text" name="name" id="name" />
+						</div>
+						<div class="input-and-label">
+							<label for="name">Email</label>
+							<input type="text" name="email" id="email" />
+						</div>
 					</div>
 
-					<button class="content__button">Send.</button>
+					<div class="textarea-and-label">
+						<label for="name">Message</label>
+						<textarea name="message" id="message"></textarea>
+					</div>
+
+					<button class="content__button content__button--pink serif-regular">Send.</button>
 				</form>
 			</div>
 		</section>
@@ -84,7 +98,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 <script src="/src/js/decodeEmail.js"></script>
 
-<style define:vars={{ daydreamBgImage }}>
+<style define:vars={{ daydreamBgImage, mapBgImage }}>
 	.intro {
 		background-color: hsl(var(--white));
 		display: flex;
@@ -217,21 +231,48 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		display: flex;
 		align-items: center;
 
+		/* padding has to be on the section not the content div because of the map bg on the content div */
+		padding-block: 2rem;
+		padding-inline-start: 1.3rem;
+		padding-inline-end: 1rem;
+
 		/* border: 3px solid cyan; */
 	}
 
 	/* contact section content */
 	.contactsection__content {
-		padding-block: 2rem;
-		padding-inline-start: 1.3rem;
-		padding-inline-end: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		justify-content: center;
+		/* align-items: start; */
+
+		/* min-width: 66%; */
+		/* min-height: 30rem; */
+		width: min(75rem, 100%);
+		border: 1px solid fuchsia;
+	}
+
+	.contactsection__heading {
+		color: hsl(var(--white));
+		font-size: 2.5rem;
+		letter-spacing: -1px;
 	}
 
 	@media (min-width: 992px) {
-		.contactsection__content {
-			padding-block: 2rem;
+		.contactpage__contactsection {
+			/* padding has to be on the section not the content div */
+			/* because the map image is a background on the content div so the padding doesn't apply */
+			padding-block-start: 2rem;
+			padding-block-end: 6rem;
 			padding-inline-start: 4rem;
 			padding-inline-end: 2rem;
+		}
+		.contactsection__content {
+			background-image: var(--mapBgImage);
+			background-repeat: no-repeat;
+			background-size: 14rem;
+			background-position: top 0rem right 0rem;
 		}
 	}
 
@@ -264,5 +305,96 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			/* text-decoration: underline; */
 			text-underline-offset: 1rem;
 		}
+	}
+
+	/* contact form stuff */
+
+	.contactsection__form {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		/* min-width: 50%; */
+		width: min(50rem, 100%);
+		/* width: 100%; */
+		border: 5px solid green;
+	}
+
+	@media (min-width: 992px) {
+		.contactsection__form {
+			/* flex-direction: row; */
+		}
+	}
+
+	.contactsection__form input:not(textarea) {
+		/* border: 1px solid red; */
+		border: none;
+		margin: 0;
+
+		/* width: 100%; */
+	}
+
+	.contactsection__form .input-and-label {
+		display: flex;
+		flex-direction: column;
+		background-color: hsl(var(--white));
+		/* border: 1px solid blue; */
+		padding-block: 0.2rem;
+		padding-inline: 0.5rem;
+		/* width: 100%; */
+	}
+
+	@media (min-width: 992px) {
+		.contactsection__form .input-and-label {
+			width: 50%;
+		}
+	}
+
+	.contactsection__form textarea {
+		background-color: hsl(var(--white));
+		/* border: 1px solid yellow; */
+		border: none;
+		/* padding-block: 0.2rem; */
+		/* padding-inline: 0.5rem; */
+		margin: 0;
+		min-height: 8rem;
+
+		/* width: 100%; */
+		/* resize: none; */
+	}
+
+	.contactsection__form .textarea-and-label {
+		display: flex;
+		flex-direction: column;
+		background-color: hsl(var(--white));
+		/* border: 1px solid green; */
+		padding: 0.5rem;
+	}
+
+	.contactsection__form label {
+		/* color: hsl(var(--navy)); */
+		/* color: hsl(var(--lightgrey)); */
+		/* opacity: 66%; */
+		color: hsl(var(--lightgreynavy));
+		font-size: small;
+	}
+
+	.form__inputs {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-block-end: 0.6rem;
+	}
+
+	@media (min-width: 992px) {
+		.form__inputs {
+			flex-direction: row;
+			gap: 0.6rem;
+		}
+	}
+
+	.contactsection__form button {
+		font-size: 2rem;
+		width: 50%;
+		margin-block-start: 2rem;
 	}
 </style>

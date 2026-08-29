@@ -193,12 +193,10 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 				(for some reason we can't use url() - it errors, possibly a bug)
 				(the urls are set in the frontmatter and made available with <style define:vars)) 
 				it's either this or put them in an is:global style tag */
-			/* background-image: var(--graffitiLQIP); */
 		}
 
 		.ocean {
 			background-color: hsl(var(--accent3));
-			/* background-image: var(--oceanLQIP); */
 		}
 	}
 
@@ -229,7 +227,10 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 	}
 
 	.day-eight-logo {
-		color: white;
+		/* color: white; */
+		/* now doing the logo as black with opacity */
+		color: black;
+		opacity: 20%;
 		/* astro-icons 1.1 now uses font-size instead of width/height */
 		font-size: 10rem;
 		padding: 0 1rem;
