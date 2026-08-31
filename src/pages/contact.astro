@@ -79,13 +79,13 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 							<input type="text" name="name" id="name" />
 						</div>
 						<div class="input-and-label">
-							<label for="name">Email</label>
+							<label for="email">Email</label>
 							<input type="text" name="email" id="email" />
 						</div>
 					</div>
 
 					<div class="textarea-and-label">
-						<label for="name">Message</label>
+						<label for="message">Message</label>
 						<textarea name="message" id="message"></textarea>
 					</div>
 
@@ -247,10 +247,9 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		justify-content: center;
 		/* align-items: start; */
 
-		/* min-width: 66%; */
 		/* min-height: 30rem; */
-		width: min(75rem, 100%);
-		border: 1px solid fuchsia;
+		width: min(67rem, 100%);
+		/* border: 1px solid fuchsia; */
 	}
 
 	.contactsection__heading {
@@ -313,10 +312,8 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
-		/* min-width: 50%; */
 		width: min(50rem, 100%);
-		/* width: 100%; */
-		border: 5px solid green;
+		/* border: 1px solid green; */
 	}
 
 	@media (min-width: 992px) {
@@ -325,12 +322,24 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		}
 	}
 
-	.contactsection__form input:not(textarea) {
-		/* border: 1px solid red; */
+	.contactsection__form :is(input, textarea) {
 		border: none;
 		margin: 0;
+		padding: 0;
+	}
 
-		/* width: 100%; */
+	.contactsection__form :is(input, textarea):focus-visible {
+		/* border: 1px solid hsl(var(--lightgrey)); */
+		outline: none;
+		/* background-color: hsl(var(--lightgrey)); */
+		background-color: #eee;
+		margin: 0;
+		padding: 0;
+	}
+
+	.contactsection__form input:not(textarea) {
+		/* border: 1px solid red; */
+		/* border: none; */
 	}
 
 	.contactsection__form .input-and-label {
@@ -340,7 +349,6 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		/* border: 1px solid blue; */
 		padding-block: 0.2rem;
 		padding-inline: 0.5rem;
-		/* width: 100%; */
 	}
 
 	@media (min-width: 992px) {
@@ -352,14 +360,12 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	.contactsection__form textarea {
 		background-color: hsl(var(--white));
 		/* border: 1px solid yellow; */
-		border: none;
+		/* border: none; */
 		/* padding-block: 0.2rem; */
 		/* padding-inline: 0.5rem; */
-		margin: 0;
+		/* margin: 0; */
 		min-height: 8rem;
-
-		/* width: 100%; */
-		/* resize: none; */
+		resize: none;
 	}
 
 	.contactsection__form .textarea-and-label {

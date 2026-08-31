@@ -295,7 +295,11 @@ button {
 	/* padding-block: 0.2rem; */
 	/* probably set width on buttons with modifiers or according to context */
 	border-radius: 3rem;
+	padding-block-start: 0.5rem;
+	padding-block-end: 0.3rem;
+	padding-inline: 1rem;
 
+	line-height: 1;
 	/* border: 1px solid red; */
 }
 
