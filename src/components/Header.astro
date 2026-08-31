@@ -6,9 +6,11 @@ import { Icon } from "astro-icon/components";
 	<nav>
 		<ul>
 			<li class="main-nav__li--home">
-				<!-- <Icon name="day-eight-logo" class="day-eight-logo" aria-hidden="true" /> -->
-				<!-- <span class="visually-hidden">Home</span> -->
-				<a href="">Home</a>
+				<a href="">
+					<Icon name="day-eight-logo" class="day-eight-logo" aria-hidden="true" />
+					<span class="visually-hidden">Home</span>
+				</a>
+				<!-- <a href="">Home</a> -->
 			</li>
 			<li><a href="">About</a></li>
 			<li><a href="">Work</a></li>
@@ -38,6 +40,7 @@ import { Icon } from "astro-icon/components";
 		list-style: none;
 		padding: 0;
 		display: flex;
+		align-items: center;
 		gap: 1rem;
 		color: hsl(var(--white));
 	}
@@ -47,7 +50,7 @@ import { Icon } from "astro-icon/components";
 	}
 
 	/* nav li:not(:first-of-type, :last-of-type)::after { */
-	nav li:not(:last-of-type)::after {
+	nav li:not(:first-of-type, :last-of-type)::after {
 		content: "|";
 		/* display: block; */
 		margin-inline-start: 1rem;
@@ -61,5 +64,17 @@ import { Icon } from "astro-icon/components";
 	nav li a {
 		color: hsl(var(--white));
 		text-decoration: none;
+	}
+
+	nav .main-nav__li--home a {
+		color: hsl(var(--white) / 33%);
+		/* color: hsl(var(--accent)); */
+		font-size: 2rem;
+		margin-inline-end: 2rem;
+	}
+
+	nav .main-nav__li--home a:is(:hover, :focus-visible) {
+		color: hsl(var(--white) / 88%);
+		/* color: hsl(var(--white)); */
 	}
 </style>
