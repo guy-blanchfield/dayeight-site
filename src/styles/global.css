@@ -97,8 +97,11 @@ html {
 	font-display: swap;
 }
 
+/* @font-face stuff for Proxima Nova is in the css linked to from head in <Layout /> */
+/* https://use.typekit.net/fyz4gom.css */
+
 body {
-	font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
+	font-family: "proxima-nova", Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
 	/* font-family:
 		Inter, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
 		"Helvetica Neue", sans-sans; */
@@ -301,6 +304,9 @@ button {
 
 	line-height: 1;
 	/* border: 1px solid red; */
+
+	/* remove any link styles */
+	text-decoration: none;
 }
 
 .content__button--purple {

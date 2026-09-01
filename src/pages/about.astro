@@ -47,7 +47,9 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 							communication.
 						</h1>
 
-						<div class="content__button serif-regular content__button--purple">Say hello.</div>
+						<a href="/contact/" class="content__button serif-regular content__button--purple">Say hello.</a>
+						<!-- <a href="/contact/"><div class="content__button serif-regular content__button--purple">Say hello.</div></a> -->
+						<!-- <div class="content__button serif-regular content__button--purple">Say hello.</div> -->
 					</div>
 				</div>
 
@@ -146,8 +148,8 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 				/>
 			</section>
 		</Main>
-	</div></Layout
->
+	</div>
+</Layout>
 
 <style define:vars={{ ilikeyouBgImage }}>
 	/* flex-columns stuff is in global.css */
@@ -168,6 +170,17 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 	}
 
 	@media (min-width: 992px) {
+		:is(.intro, .builtonpassion) > * {
+			/* equivalent to short-hand 
+			flex: 1 1 100% */
+			/* OR long-hand 
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: 100%; */
+
+			flex: 100%;
+		}
+
 		:is(.intro, .builtonpassion) > :first-child {
 			flex-direction: column;
 			justify-content: center;
@@ -290,7 +303,7 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 	/* (content__button styles are in global.css) */
 	.intro .content__button {
 		font-size: 2.5rem;
-		min-width: 66%;
+		min-width: 50%;
 		/* border: 1px solid fuchsia; */
 	}
 
