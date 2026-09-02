@@ -25,38 +25,41 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 	title="Day Eight - Design | Social | Creative"
 	description="Branding and Graphic Design Studio in Yorkshire. Making ambitious businesses look as good as they are through branding, design, social media and digital."
 >
-	<!-- wrapper div for the content minus the hero, so we can margin everything past the hero, which will have position: fixed -->
+	<!-- intro section is now functioning as a hero (fixed position with sticky header scrolling over it) -->
+	<!-- so it has to be outside of content-wrapper (the div with the z-index) -->
+	<!-- It's going to have to be outside of <Main> as well otherwise <Header> will have to go inside main -->
+
+	<!-- About Us section -->
+	<section class="intro flex-columns">
+		<div>
+			<!-- need another div here to keep the heading and email -->
+			<!-- aligned right, but centred within outer container -->
+			<div class="section__content">
+				<h1 class="section__heading serif-fancy">
+					Day Eight is an innovative creative studio specialising in branding, design, social content &amp; creative
+					communication.
+				</h1>
+
+				<a href="/contact/" class="content__button serif-regular content__button--purple">Say hello.</a>
+				<!-- <a href="/contact/"><div class="content__button serif-regular content__button--purple">Say hello.</div></a> -->
+				<!-- <div class="content__button serif-regular content__button--purple">Say hello.</div> -->
+			</div>
+		</div>
+
+		<div class="section__image ilikeyou">
+			<!-- Doing this as a background, at least for now -->
+		</div>
+	</section>
+	<!-- wrapper div for the content minus the hero / intro section, so we can margin everything past the hero, which will have position: fixed -->
 	<div class="content-wrapper">
-		<Header />
 		<!-- put any css to control min-height and flex-grow of body, main, header and footer in global.css -->
 
+		<!-- Header (temp) -->
+
+		<Header bgColour="hsl(var(--babyblue))" linkColour="hsl(var(--navy))" logoColour="hsl(var(--navy) / 33%);" />
 		<Main>
 			<!-- not sure there's any benefit to doing this content as components at the moment -->
 			<!-- maybe to keep the email obfuscation stuff tidy? -->
-
-			<!-- Header (temp) -->
-
-			<!-- About Us section -->
-			<section class="intro flex-columns">
-				<div>
-					<!-- need another div here to keep the heading and email -->
-					<!-- aligned right, but centred within outer container -->
-					<div class="section__content">
-						<h1 class="section__heading serif-fancy">
-							Day Eight is an innovative creative studio specialising in branding, design, social content &amp; creative
-							communication.
-						</h1>
-
-						<a href="/contact/" class="content__button serif-regular content__button--purple">Say hello.</a>
-						<!-- <a href="/contact/"><div class="content__button serif-regular content__button--purple">Say hello.</div></a> -->
-						<!-- <div class="content__button serif-regular content__button--purple">Say hello.</div> -->
-					</div>
-				</div>
-
-				<div class="section__image ilikeyou">
-					<!-- Doing this as a background, at least for now -->
-				</div>
-			</section>
 
 			<section class="builtonpassion flex-columns">
 				<div>
@@ -154,13 +157,30 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 <style define:vars={{ ilikeyouBgImage }}>
 	/* flex-columns stuff is in global.css */
 
+	/* probably put this in global.css at some point */
+	/* content-wrapper */
+	.content-wrapper {
+		/* border: 1px solid fuchsia; */
+		margin-block-start: calc(100vh - var(--header-height));
+		position: relative;
+		z-index: 100;
+	}
+
 	.intro {
 		background-color: hsl(var(--navy));
 	}
 
+	/* put these styles into a utility class for hero / first sections */
 	@media (min-width: 992px) {
 		.intro {
-			min-height: 75vh;
+			/* min-height: 75vh; */
+			min-height: calc(100vh - var(--header-height));
+			position: fixed;
+			top: 0;
+
+			/* because position fixed essentially takes the element out of its context, it won't naturally fill the space */
+			/* so we have to tell it to take up the full width - is there a better way to do this? */
+			width: 100vw;
 		}
 	}
 
@@ -330,6 +350,9 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 			overflow: hidden;
 			gap: 1rem;
 			padding-block-end: 1rem;
+
+			/* need a bgc here to stop the fixed position section shwing through */
+			background-color: hsl(var(--white));
 		}
 
 		.picture-section img {

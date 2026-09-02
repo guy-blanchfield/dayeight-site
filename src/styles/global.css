@@ -52,7 +52,9 @@ html {
 
 	/* effectively black */
 	--darknavy: 186 40% 15%;
+
 	--white: 0 0% 100%;
+	--black: 0 0% 0%;
 
 	/* desaturated navy for text out of white */
 	--greynavy: 195 50% 14%;
@@ -287,6 +289,7 @@ button {
 		transform 150ms ease;
 	-webkit-appearance: none;
 	-moz-appearance: none;
+	appearance: none;
 }
 
 /* button shaped element */

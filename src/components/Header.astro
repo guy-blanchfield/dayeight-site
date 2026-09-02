@@ -1,5 +1,19 @@
 ---
 import { Icon } from "astro-icon/components";
+
+export interface Props {
+	bgColour?: string;
+	linkColour?: string;
+	dividerColour?: string;
+	logoColour?: string;
+}
+
+const {
+	bgColour = "hsl(var(--navy))",
+	linkColour = "hsl(var(--white))",
+	dividerColour = "hsl(var(--accent))",
+	logoColour = "color: hsl(var(--white) / 33%);",
+} = Astro.props;
 ---
 
 <header>
@@ -19,9 +33,10 @@ import { Icon } from "astro-icon/components";
 	</nav>
 </header>
 
-<style>
+<style define:vars={{ bgColour, linkColour, dividerColour, logoColour }}>
 	header {
-		background-color: hsl(var(--navy));
+		/* background-color: hsl(var(--navy)); */
+		background-color: var(--bgColour);
 		/* border: 1px solid fuchsia; */
 		/* padding: 2rem; */
 
@@ -62,12 +77,14 @@ import { Icon } from "astro-icon/components";
 	}
 
 	nav li a {
-		color: hsl(var(--white));
+		/* color: hsl(var(--white)); */
+		color: var(--linkColour);
 		text-decoration: none;
 	}
 
 	nav .main-nav__li--home a {
-		color: hsl(var(--white) / 33%);
+		/* color: hsl(var(--white) / 33%); */
+		color: var(--logoColour);
 		/* color: hsl(var(--accent)); */
 		font-size: 2rem;
 		margin-inline-end: 2rem;

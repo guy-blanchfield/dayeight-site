@@ -20,85 +20,99 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	title="Day Eight - Design | Social | Creative"
 	description="Day Eight is a creative communication agency helping people with branding, social media and PR."
 >
-	<Header />
+	<!-- intro section is now functioning as a hero (fixed position with sticky header scrolling over it) -->
+	<!-- so it has to be outside of content-wrapper (the div with the z-index) -->
+	<section class="intro">
+		<div>
+			<!-- need another div here to keep the heading and email -->
+			<!-- aligned right, but centred within outer container -->
+			<div class="contactpage__content">
+				<h2 class="contactpage__heading serif-fancy">Helping ambitious businesses become impossible to ignore.</h2>
 
-	<Main>
-		<section class="intro">
-			<div>
-				<!-- need another div here to keep the heading and email -->
-				<!-- aligned right, but centred within outer container -->
-				<div class="contactpage__content">
-					<h2 class="contactpage__heading serif-fancy">Helping ambitious businesses become impossible to ignore.</h2>
+				<p>Every great project starts with a conversation.</p>
+				<p>
+					Whether you've got a new business, a bold idea or a brand that's ready for its next chapter, we'd love to hear
+					about it.
+				</p>
 
-					<p>Every great project starts with a conversation.</p>
-					<p>
-						Whether you've got a new business, a bold idea or a brand that's ready for its next chapter, we'd love to
-						hear about it.
-					</p>
+				<p>
+					Based in Yorkshire and working with good businesses wherever they are in the world, Day Eight helps ambitious
+					brands stand out through branding, design, social, content and creative communication.
+				</p>
 
-					<p>
-						Based in Yorkshire and working with good businesses wherever they are in the world, Day Eight helps
-						ambitious brands stand out through branding, design, social, content and creative communication.
-					</p>
-
-					<p>Pop us a message. Say hello. Let's see where it takes us.</p>
-				</div>
+				<p>Pop us a message. Say hello. Let's see where it takes us.</p>
 			</div>
+		</div>
 
-			<div class="daydream">
-				<!-- widths is the image widths we want astro to generate automatically,
+		<div class="daydream">
+			<!-- widths is the image widths we want astro to generate automatically,
 					 those values will also be added to the img element srcset e.g. 480w, 640w etc -->
-				<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
+			<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
 					 which image to use depending on media display size -->
-				<!-- <Picture class="contact__img picture-image picture-image--hide" src={daydreamImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280, 1920]} alt="Sign saying 'Don't give up the daydream" width="851" height="1146" loading="lazy" /> -->
+			<!-- <Picture class="contact__img picture-image picture-image--hide" src={daydreamImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280, 1920]} alt="Sign saying 'Don't give up the daydream" width="851" height="1146" loading="lazy" /> -->
 
-				<!-- <img src="/images/daydream-temp-lowres.jpg" width="425" height="573" alt=""> -->
-				<!-- <img src="/images/daydream-temp-lowres.jpg" alt=""> -->
+			<!-- <img src="/images/daydream-temp-lowres.jpg" width="425" height="573" alt=""> -->
+			<!-- <img src="/images/daydream-temp-lowres.jpg" alt=""> -->
 
-				<!-- Doing this as a background, at least for now -->
-			</div>
-		</section>
+			<!-- Doing this as a background, at least for now -->
+		</div>
+	</section>
 
-		<section class="contactpage__contactsection">
-			<div class="contactsection__content">
-				<!-- contact section email and contact form -->
-				<!-- just the mailto for the time being -->
+	<!-- wrapper div for the content minus the hero / intro section, so we can margin everything past the hero, which will have position: fixed -->
+	<div class="content-wrapper">
+		<!-- <Header bgColour="hsl(var(--babyblue))" linkColour="hsl(var(--navy))" /> -->
+		<!-- defaults will do bc bg is navy -->
+		<Header />
 
-				<!-- <div id="email" class="contactpage__email serif">e. <a href={`mailto:${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a></div> -->
-				<!-- <div id="email" class="contactpage__email serif-fancy">
+		<Main>
+			<section class="contactpage__contactsection">
+				<div class="contactsection__content">
+					<!-- contact section email and contact form -->
+					<!-- just the mailto for the time being -->
+
+					<!-- <div id="email" class="contactpage__email serif">e. <a href={`mailto:${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a></div> -->
+					<!-- <div id="email" class="contactpage__email serif-fancy">
 					e. <a href={`${emailObf}`} class="eml-protected contactpage__mailto hidden">{emailObf}</a>
 				</div> -->
 
-				<h2 class="contactsection__heading serif-regular">Say hello.</h2>
+					<h2 class="contactsection__heading serif-regular">Say hello.</h2>
 
-				<form action="" class="contactsection__form">
-					<!-- group the inputs is their own div -->
-					<div class="form__inputs">
-						<div class="input-and-label">
-							<label for="name">Name</label>
-							<input type="text" name="name" id="name" />
+					<form action="" class="contactsection__form">
+						<!-- group the inputs is their own div -->
+						<div class="form__inputs">
+							<div class="input-and-label">
+								<label for="name">Name</label>
+								<input type="text" name="name" id="name" />
+							</div>
+							<div class="input-and-label">
+								<label for="email">Email</label>
+								<input type="text" name="email" id="email" />
+							</div>
 						</div>
-						<div class="input-and-label">
-							<label for="email">Email</label>
-							<input type="text" name="email" id="email" />
+
+						<div class="textarea-and-label">
+							<label for="message">Message</label>
+							<textarea name="message" id="message"></textarea>
 						</div>
-					</div>
 
-					<div class="textarea-and-label">
-						<label for="message">Message</label>
-						<textarea name="message" id="message"></textarea>
-					</div>
-
-					<button class="content__button content__button--pink serif-regular">Send.</button>
-				</form>
-			</div>
-		</section>
-	</Main>
+						<button class="content__button content__button--pink serif-regular">Send.</button>
+					</form>
+				</div>
+			</section>
+		</Main>
+	</div>
 </Layout>
 
 <script src="/src/js/decodeEmail.js"></script>
 
 <style define:vars={{ daydreamBgImage, mapBgImage }}>
+	.content-wrapper {
+		/* border: 1px solid fuchsia; */
+		margin-block-start: calc(100vh - var(--header-height));
+		position: relative;
+		z-index: 100;
+	}
+
 	.intro {
 		background-color: hsl(var(--white));
 		display: flex;
@@ -110,7 +124,14 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			flex-direction: row;
 			justify-content: space-between;
 
-			min-height: 75vh;
+			/* min-height: 75vh; */
+			min-height: calc(100vh - var(--header-height));
+			position: fixed;
+			top: 0;
+
+			/* because position fixed essentially takes the element out of its context, it won't naturally fill the space */
+			/* so we have to tell it to take up the full width - is there a better way to do this? */
+			width: 100vw;
 		}
 	}
 
