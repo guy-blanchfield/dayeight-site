@@ -30,11 +30,11 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	<!-- HomeHero is going to be position fixed so put it wherever seems most semantic in the document flow -->
 	<HomeHero />
 
+	<Header />
+	<!-- put any css to control min-height and flex-grow of body, main, header and footer in global.css -->
+
 	<!-- wrapper div for the content minus the hero, so we can margin everything past the hero, which will have position: fixed -->
 	<div class="content-wrapper">
-		<Header />
-		<!-- put any css to control min-height and flex-grow of body, main, header and footer in global.css -->
-
 		<Main>
 			<!-- not sure there's any benefit to doing this content as components at the moment -->
 			<!-- maybe to keep the email obfuscation stuff tidy? -->
@@ -124,13 +124,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		/* scroll-padding-top: var(--header-height); */
 		/* scroll-padding-top: 2.5rem; */
 	}
-	/* content-wrapper */
-	.content-wrapper {
-		/* border: 1px solid fuchsia; */
-		margin-block-start: calc(100vh - var(--header-height));
-		position: relative;
-		z-index: 100;
-	}
+
 	/* ---------------------------- about us section ---------------------------- */
 
 	.about-us {

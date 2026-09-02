@@ -235,6 +235,32 @@ it's doable, but difficult to test */
 	}
 }
 
+/* for the content-wrapper - because the first section / hero is position fixed, so out of the normal flow */
+/* the rest of the content needs a margin the height of the first section / hero */
+.content-wrapper {
+	/* border: 1px solid fuchsia; */
+	/* margin-block-start: calc(100vh - var(--header-height)); */
+	position: relative;
+	/* top: calc(100vh - var(--header-height)); */
+	z-index: 2;
+}
+
+/* for the fxed position first section / hero */
+/* put these styles into a utility class for hero / first sections */
+@media (min-width: 992px) {
+	.fixed-hero-section {
+		/* min-height: 75vh; */
+		height: calc(100vh - var(--header-height));
+		position: fixed;
+		top: 0;
+		z-index: 1;
+
+		/* because position fixed essentially takes the element out of its context, it won't naturally fill the space */
+		/* so we have to tell it to take up the full width - is there a better way to do this? */
+		width: 100vw;
+	}
+}
+
 .unstyled-list {
 	list-style: none;
 	padding: 0;

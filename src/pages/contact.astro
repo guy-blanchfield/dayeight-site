@@ -20,51 +20,50 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	title="Day Eight - Design | Social | Creative"
 	description="Day Eight is a creative communication agency helping people with branding, social media and PR."
 >
-	<!-- intro section is now functioning as a hero (fixed position with sticky header scrolling over it) -->
-	<!-- so it has to be outside of content-wrapper (the div with the z-index) -->
-	<section class="intro">
-		<div>
-			<!-- need another div here to keep the heading and email -->
-			<!-- aligned right, but centred within outer container -->
-			<div class="contactpage__content">
-				<h2 class="contactpage__heading serif-fancy">Helping ambitious businesses become impossible to ignore.</h2>
+	<!-- <Header bgColour="hsl(var(--babyblue))" linkColour="hsl(var(--navy))" /> -->
+	<!-- defaults will do bc bg is navy -->
+	<Header />
 
-				<p>Every great project starts with a conversation.</p>
-				<p>
-					Whether you've got a new business, a bold idea or a brand that's ready for its next chapter, we'd love to hear
-					about it.
-				</p>
+	<Main>
+		<!-- intro section is now functioning as a hero (fixed position with sticky header scrolling over it) -->
+		<section class="intro flex-columns fixed-hero-section">
+			<div>
+				<!-- need another div here to keep the heading and email -->
+				<!-- aligned right, but centred within outer container -->
+				<div class="contactpage__content">
+					<h2 class="contactpage__heading serif-fancy">Helping ambitious businesses become impossible to ignore.</h2>
 
-				<p>
-					Based in Yorkshire and working with good businesses wherever they are in the world, Day Eight helps ambitious
-					brands stand out through branding, design, social, content and creative communication.
-				</p>
+					<p>Every great project starts with a conversation.</p>
+					<p>
+						Whether you've got a new business, a bold idea or a brand that's ready for its next chapter, we'd love to
+						hear about it.
+					</p>
 
-				<p>Pop us a message. Say hello. Let's see where it takes us.</p>
+					<p>
+						Based in Yorkshire and working with good businesses wherever they are in the world, Day Eight helps
+						ambitious brands stand out through branding, design, social, content and creative communication.
+					</p>
+
+					<p>Pop us a message. Say hello. Let's see where it takes us.</p>
+				</div>
 			</div>
-		</div>
 
-		<div class="daydream">
-			<!-- widths is the image widths we want astro to generate automatically,
+			<div class="daydream">
+				<!-- widths is the image widths we want astro to generate automatically,
 					 those values will also be added to the img element srcset e.g. 480w, 640w etc -->
-			<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
+				<!-- sizes is what will be added to the picture or img element as attribute to tell the broswer
 					 which image to use depending on media display size -->
-			<!-- <Picture class="contact__img picture-image picture-image--hide" src={daydreamImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280, 1920]} alt="Sign saying 'Don't give up the daydream" width="851" height="1146" loading="lazy" /> -->
+				<!-- <Picture class="contact__img picture-image picture-image--hide" src={daydreamImage} formats={['webp', 'jpeg']} widths={[240, 540, 720, 960, 1280, 1920]} alt="Sign saying 'Don't give up the daydream" width="851" height="1146" loading="lazy" /> -->
 
-			<!-- <img src="/images/daydream-temp-lowres.jpg" width="425" height="573" alt=""> -->
-			<!-- <img src="/images/daydream-temp-lowres.jpg" alt=""> -->
+				<!-- <img src="/images/daydream-temp-lowres.jpg" width="425" height="573" alt=""> -->
+				<!-- <img src="/images/daydream-temp-lowres.jpg" alt=""> -->
 
-			<!-- Doing this as a background, at least for now -->
-		</div>
-	</section>
+				<!-- Doing this as a background, at least for now -->
+			</div>
+		</section>
 
-	<!-- wrapper div for the content minus the hero / intro section, so we can margin everything past the hero, which will have position: fixed -->
-	<div class="content-wrapper">
-		<!-- <Header bgColour="hsl(var(--babyblue))" linkColour="hsl(var(--navy))" /> -->
-		<!-- defaults will do bc bg is navy -->
-		<Header />
-
-		<Main>
+		<!-- wrapper div for the content minus the hero / intro section, so we can margin everything past the hero, which will have position: fixed -->
+		<div class="content-wrapper">
 			<section class="contactpage__contactsection">
 				<div class="contactsection__content">
 					<!-- contact section email and contact form -->
@@ -99,24 +98,17 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 					</form>
 				</div>
 			</section>
-		</Main>
-	</div>
+		</div>
+	</Main>
 </Layout>
 
 <script src="/src/js/decodeEmail.js"></script>
 
 <style define:vars={{ daydreamBgImage, mapBgImage }}>
-	.content-wrapper {
-		/* border: 1px solid fuchsia; */
-		margin-block-start: calc(100vh - var(--header-height));
-		position: relative;
-		z-index: 100;
-	}
-
 	.intro {
 		background-color: hsl(var(--white));
-		display: flex;
-		flex-direction: column;
+		/* display: flex; */
+		/* flex-direction: column; */
 	}
 
 	@media (min-width: 992px) {
@@ -125,13 +117,13 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			justify-content: space-between;
 
 			/* min-height: 75vh; */
-			min-height: calc(100vh - var(--header-height));
+			/* min-height: calc(100vh - var(--header-height));
 			position: fixed;
 			top: 0;
 
 			/* because position fixed essentially takes the element out of its context, it won't naturally fill the space */
 			/* so we have to tell it to take up the full width - is there a better way to do this? */
-			width: 100vw;
+			/* width: 100vw; */
 		}
 	}
 
@@ -141,9 +133,12 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 	@media (min-width: 992px) {
 		.intro > * {
-			flex-grow: 1;
+			/* shorthand */
+			flex: 100%;
+
+			/* flex-grow: 1;
 			flex-shrink: 1;
-			flex-basis: 100%;
+			flex-basis: 100%; */
 		}
 		.intro > :first-child {
 			flex-basis: 200%;
@@ -156,6 +151,15 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 			background-position: left top;
 			background-repeat: no-repeat;
 			background-size: cover;
+		}
+	}
+
+	@media (min-width: 992px) {
+		.contactpage__contactsection {
+			/* add a min-height so the section is tall enough to get the sticky header to the top when it scrolls */
+			/* at some point this might be redundant if we put more content in the contact page */
+			/* bit of a magic number here, we can probably improve it if we a footer height var */
+			min-height: 90vh;
 		}
 	}
 

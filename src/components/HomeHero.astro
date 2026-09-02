@@ -13,7 +13,7 @@ import graffitiImage from "../assets/images/graffiti-1x1-fullscale.jpg";
 import oceanImage from "../assets/images/ocean-fullscale.jpg";
 ---
 
-<section class="hero">
+<section class="hero fixed-hero-section">
 	<!-- order of formats is important -->
 	<!-- i.e. browser will choose the first format that it can display -->
 	<!-- so formats ['jpeg', 'webp'] will mean that the browser will -->
@@ -130,25 +130,29 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 	}
 
 	/* desktop / laptop */
-	@media (min-width: 700px) {
+	/* @media min-width was 700 */
+	/* apart from the flex-direction rule, this is all done in global now with .fixed-hero-section */
+	@media (min-width: 992px) {
 		.hero {
 			flex-direction: row;
-			height: calc(100vh - var(--header-height));
+			/* height: calc(100vh - var(--header-height)); */
 			/* because position fixed essentially takes the element out of its context, it won't naturally fill the space */
 			/* so we have to tell it to take up the full width - is there a better way to do this? */
-			width: 100vw;
+			/* width: 100vw;
 			margin-bottom: 0;
 
 			position: fixed;
-			top: 0;
+			top: 0; */
 			/* right: 0; */
 		}
 
 		.hero > * {
 			/* we want each child to try to take up maximum space, that way they'll shrink uniformly */
-			flex-grow: 0;
+			/* short-hand */
+			flex: 0 1 100%;
+			/* flex-grow: 0;
 			flex-shrink: 1;
-			flex-basis: 100%;
+			flex-basis: 100%; */
 			/* border: 1px solid fuchsia; */
 			/* display: initial; */
 		}
