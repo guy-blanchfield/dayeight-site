@@ -93,8 +93,13 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 							<label for="message">Message</label>
 							<textarea name="message" id="message"></textarea>
 						</div>
-
-						<button class="content__button content__button--pink serif-regular">Send.</button>
+						<!-- button here not input so we can add the waiting animation inside it i think? -->
+						<button
+							type="submit"
+							class="contact-submit content__button content__button--pink serif-regular"
+							name="contact-submit"
+							id="contact-submit">Send.</button
+						>
 					</form>
 				</div>
 			</section>
@@ -103,6 +108,28 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 </Layout>
 
 <script src="/src/js/decodeEmail.js"></script>
+
+<!-- probably need this recaptcha stuff is:inline -->
+
+<!-- safest to put recaptcha inline, external was unreliable -->
+<script is:inline>
+	// recaptcha - explicit rendering - onload callback
+	// NB has to be var! and also anonymous function
+
+	var onloadCallback = function () {
+		grecaptcha.render("contact-recaptcha", {
+			// test key
+			// 'sitekey' : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+			// real key
+			sitekey: "6LdkTv8eAAAAACbcTcH1vGHMCz59nuDMd3C_Tbgr",
+			callback: "verifyRecaptcha",
+			"expired-callback": "recaptchaExpired",
+		});
+	};
+</script>
+
+<script is:inline src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer
+></script>
 
 <style define:vars={{ daydreamBgImage, mapBgImage }}>
 	.intro {
