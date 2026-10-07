@@ -1,6 +1,6 @@
 const contactname = document.getElementById("contact-name");
-// nickname is the honey pot I think
-const contactnickname = document.getElementById("contact-nickname");
+// nickname is the honey pot, which I don't think we're using anymore
+// const contactnickname = document.getElementById("contact-nickname");
 const contactemail = document.getElementById("contact-email");
 const contactmessage = document.getElementById("contact-message");
 const contactsubmit = document.getElementById("contact-submit");

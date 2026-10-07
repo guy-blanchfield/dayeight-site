@@ -76,24 +76,34 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 					<h2 class="contactsection__heading serif-regular">Say hello.</h2>
 
-					<form action="" class="contactsection__form">
+					<form action="" class="contactsection__form" id="contact-form">
 						<!-- group the inputs is their own div -->
 						<div class="form__inputs">
 							<div class="input-and-label">
-								<label for="name">Name</label>
-								<input type="text" name="name" id="name" />
+								<label for="contact-name">Name</label>
+								<input type="text" name="contact-name" id="contact-name" />
 							</div>
 							<div class="input-and-label">
-								<label for="email">Email</label>
-								<input type="text" name="email" id="email" />
+								<label for="contact-email">Email</label>
+								<input type="text" name="contact-email" id="contact-email" />
 							</div>
 						</div>
 
 						<div class="textarea-and-label">
-							<label for="message">Message</label>
-							<textarea name="message" id="message"></textarea>
+							<label for="contact-message">Message</label>
+							<textarea name="contact-message" id="contact-message"></textarea>
 						</div>
-						<!-- button here not input so we can add the waiting animation inside it i think? -->
+
+						<!-- ============== recaptcha ============== -->
+
+						<!-- recaptcha explicit rendering -->
+						<div id="contact-recaptcha" class="g-recaptcha"></div>
+						<span class="sr-only" id="contact-recaptcha-error-hidden"></span>
+						<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
+							<span class="contact-error-content"><!-- empty to start --></span>
+						</div>
+
+						<!-- button type submit here NOT input type submit so we can add the waiting animation inside it i think? -->
 						<button
 							type="submit"
 							class="contact-submit content__button content__button--pink serif-regular"
@@ -101,6 +111,20 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 							id="contact-submit">Send.</button
 						>
 					</form>
+
+					<!-- just do one error-message area, there isn't really any room for dedicated error messages for each input -->
+					<!-- we'll probably need to create each message dynamically so they can all be visible at the same time -->
+					<!-- rather than it only displaying one error message at a time -->
+
+					<!-- maybe just stick them all here for the time being while we're testing it -->
+					<div class="contact-error" id="contact-name-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<!-- success message -->
+					<div id="contact-success" class="contact-success" data-visible="false" aria-hidden="true">
+						Thank you for your message
+					</div>
 				</div>
 			</section>
 		</div>
@@ -119,7 +143,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	var onloadCallback = function () {
 		grecaptcha.render("contact-recaptcha", {
 			// real key
-			sitekey: siteKeyGoesHere,
+			sitekey: import.meta.env.RECAPTCHA_SITEKEY,
 			callback: "verifyRecaptcha",
 			"expired-callback": "recaptchaExpired",
 		});
