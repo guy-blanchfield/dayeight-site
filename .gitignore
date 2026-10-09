@@ -26,3 +26,6 @@ pnpm-debug.log*
 # htpasswd
 .htpasswd
 htpasswd
+
+# the recaptcha key
+src/js/grc-key.js

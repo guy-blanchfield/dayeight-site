@@ -1,3 +1,5 @@
+console.log("contact.js running");
+
 const contactname = document.getElementById("contact-name");
 // nickname is the honey pot, which I don't think we're using anymore
 // const contactnickname = document.getElementById("contact-nickname");
@@ -15,6 +17,7 @@ const contactsubmittext = contactsubmit.textContent;
 
 // just do inputsStatus manually for now
 const inputnames = ["contactname", "contactemail", "contactmessage", "contactrecaptcha"];
+// const inputnames = ["contactname", "contactemail", "contactmessage"];
 const inputsStatus = {};
 
 inputnames.forEach((n) => {
@@ -34,10 +37,11 @@ let allowblurvalidate = false;
 // the recaptcha response token
 let recaptchaResponse = "";
 
-// eventlistener for change, to activate blur validation
+// eventlistener for change, to activate blur validation (and also, new for dayeight, add the disable class to the submit button)
 contactform.addEventListener("change", () => {
 	// console.log('contact form change!');
 	allowblurvalidate = true;
+	disableSubmit(true);
 });
 
 // eventlistener for input focusouts/ blurs
@@ -67,6 +71,8 @@ function removeHyphen(str) {
 }
 
 function focusEventHandler(e) {
+	// console.log("focusEventHandler", e);
+
 	// exit the function if allowblurvalidate isn't true
 	if (!allowblurvalidate) return;
 
@@ -86,10 +92,9 @@ function checkInputsValid() {
 	for (const key in inputsStatus) {
 		// skip loop if the property is from prototype
 		if (!inputsStatus.hasOwnProperty(key)) continue;
-
 		const obj = inputsStatus[key];
 		if (obj.valid === false) {
-			// console.log('returning false because: ' + key);
+			console.log("returning false because: " + key);
 			return false;
 		}
 	}
@@ -125,7 +130,7 @@ function validateForm() {
 
 // right, gonna try a separate function for the blur validation
 function validateInput(input) {
-	// console.log('validating input with input: ' + input);
+	console.log("validating input with input: " + input);
 
 	let errorMsg = "";
 
@@ -196,11 +201,11 @@ function validateInput(input) {
 
 	// always check if it's ok to enable the submit button
 	if (checkInputsValid() === true) {
-		// console.log('Form is good to go');
+		console.log("Form is good to go");
 		disableSubmit(false);
 	} else {
 		// in case anything's changed since last validateinput
-		// console.log('Form is bad');
+		console.log("Form is bad");
 		disableSubmit(true);
 	}
 }
@@ -209,19 +214,34 @@ function errorMessage(form, input, text) {
 	// console.log('errorMessage function for ' + form + '-' + input + '-error');
 
 	// update the inputsStatus object
+
+	console.log("updating error message with:", text);
+	// this should happen somewhere else! errorMessage should just do the error messages
+	// like, inputstatus should reflect whether the input is validated, not whether there's an error message associated with it
+	// however that's not the reason it's breaking
+	// it's breaking because contactname doesn't get validated if user doesn't focus the contactname input or enter anything in it
+	// because allowValidate is false until the form is changed in some way.
 	inputsStatus[form + input].valid = text.length > 0 ? false : true;
 	inputsStatus[form + input].errormsg = text;
 
 	// console.log('valid: ' + inputsStatus[form + input].valid);
 	// console.log('errormsg: ' + inputsStatus[form + input].errormsg);
 
-	// get a refrence to the errormessage element
+	// get a reference to the errormessage element
+	// we're looking for the span with class 'contact-error-content' INSIDE the div with id 'contact-{input}-error'
 	const errorElement = document.querySelector("#" + form + "-" + input + "-error .contact-error-content");
+
+	// new for day eight, get a reference to the accessible visually hidden error message inside the label
+	// think I must have have forgotten to do this originally, oops
+	const errorElementHidden = document.querySelector("#" + form + "-" + input + "-error-hidden");
+
 	// template literal version
 	// const errorElement = document.querySelector(`#${form}-${input}-error .contact-error-content`);
 
-	// set the error message
+	// set the hidden error message
+	errorElementHidden.textContent = text;
 
+	// set the visual error message
 	// if errormessage is blank (i.e. input has passed validation)
 	// we don't need to update, just hide the errormessage, otherwise
 	// message will just disappear rather than transition
@@ -285,6 +305,7 @@ async function fetchForm() {
 }
 
 function verifyRecaptcha(token) {
+	console.log("verify recaptcha", token);
 	recaptchaResponse = token;
 
 	// right gonna try this as part of the validation!
@@ -357,6 +378,7 @@ function displayLoading() {
 }
 
 function disableSubmit(disable) {
+	// console.log("disable submit", disable);
 	if (disable === true) {
 		if (!contactsubmit.classList.contains("disabled")) {
 			contactsubmit.classList.add("disabled");

@@ -80,27 +80,37 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 						<!-- group the inputs is their own div -->
 						<div class="form__inputs">
 							<div class="input-and-label">
-								<label for="contact-name">Name</label>
+								<label for="contact-name"
+									>Name <span class="visually-hidden" id="contact-name-error-hidden"></span>
+								</label>
 								<input type="text" name="contact-name" id="contact-name" />
 							</div>
 							<div class="input-and-label">
-								<label for="contact-email">Email</label>
+								<label for="contact-email"
+									>Email <span class="label-required">(required)</span>
+									<span class="visually-hidden" id="contact-email-error-hidden"></span>
+								</label>
 								<input type="text" name="contact-email" id="contact-email" />
 							</div>
 						</div>
 
 						<div class="textarea-and-label">
-							<label for="contact-message">Message</label>
+							<label for="contact-message"
+								>Message <span class="label-required">(required)</span>
+								<span class="visually-hidden" id="contact-message-error-hidden"></span>
+							</label>
 							<textarea name="contact-message" id="contact-message"></textarea>
 						</div>
 
 						<!-- ============== recaptcha ============== -->
-
-						<!-- recaptcha explicit rendering -->
-						<div id="contact-recaptcha" class="g-recaptcha"></div>
-						<span class="sr-only" id="contact-recaptcha-error-hidden"></span>
-						<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
-							<span class="contact-error-content"><!-- empty to start --></span>
+						<!-- let's have a container for the recaptcha, keep things tidy -->
+						<div class="contactsection__recaptcha">
+							<!-- recaptcha explicit rendering -->
+							<div id="contact-recaptcha" class="g-recaptcha"></div>
+							<span class="visually-hidden" id="contact-recaptcha-error-hidden"></span>
+							<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
+								<span class="contact-error-content"><!-- empty to start --></span>
+							</div>
 						</div>
 
 						<!-- button type submit here NOT input type submit so we can add the waiting animation inside it i think? -->
@@ -121,6 +131,18 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 						<span class="contact-error-content"><!-- empty to start --></span>
 					</div>
 
+					<div class="contact-error" id="contact-email-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<div class="contact-error" id="contact-message-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
 					<!-- success message -->
 					<div id="contact-success" class="contact-success" data-visible="false" aria-hidden="true">
 						Thank you for your message
@@ -131,19 +153,32 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	</Main>
 </Layout>
 
+<script src="/src/js/contact.js"></script>
+
 <script src="/src/js/decodeEmail.js"></script>
 
 <!-- probably need this recaptcha stuff is:inline -->
 
 <!-- safest to put recaptcha inline, external was unreliable -->
+<!-- first get the key from the gitignored js file -->
+<script src="/src/js/grc-key.js" is:inline></script>
 <script is:inline>
 	// recaptcha - explicit rendering - onload callback
 	// NB has to be var! and also anonymous function
 
+	// env variables are now a massive hassle in astro so let's just use a js file and gitignore it
+	// if you really want to do the .env thing see https://youtu.be/kTceOl4qCm0
+	// but it looks pretty complicated and unnecessary for our purposes
+
+	// could we use php to insert the key somehow?
+
+	console.log("grcKey:", grcKey);
+
 	var onloadCallback = function () {
 		grecaptcha.render("contact-recaptcha", {
 			// real key
-			sitekey: import.meta.env.RECAPTCHA_SITEKEY,
+
+			sitekey: grcKey,
 			callback: "verifyRecaptcha",
 			"expired-callback": "recaptchaExpired",
 		});
@@ -302,6 +337,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 	.contactpage__contactsection {
 		background-color: hsl(var(--background-dark));
+		color: hsl(var(--white));
 		display: flex;
 		align-items: center;
 
@@ -458,6 +494,11 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		/* font-size: small; */
 	}
 
+	.contactsection__form label span.label-required {
+		font-size: smaller;
+		color: hsl(var(--pink));
+	}
+
 	.form__inputs {
 		display: flex;
 		flex-direction: column;
@@ -476,5 +517,74 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		font-size: 2rem;
 		width: 50%;
 		margin-block-start: 2rem;
+	}
+
+	/* gonna put disabled class here, put it in global if we end up using elsewhere */
+	.contactsection__form button.disabled {
+		background-color: #ccc;
+	}
+
+	.contactsection__recaptcha {
+		margin-block-start: 2rem;
+	}
+
+	/* success message */
+	.contact-success {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		/* transform: translateY(-100%); */
+		visibility: hidden;
+		opacity: 0;
+	}
+
+	.contact-success[data-visible="true"] {
+		visibility: visible;
+		opacity: 1;
+	}
+
+	/* error message stuff */
+
+	.contact-error-content {
+		/* opacity for now */
+		opacity: 0;
+	}
+
+	.contact-error-content.show {
+		opacity: 1;
+	}
+
+	.contact-error-content {
+		transition: all ease-in-out 250ms;
+	}
+
+	/* loading animation for the submit button while form is fetch()ing - might put this in global as well, if we use it elsewhere */
+
+	.loading {
+		display: flex;
+		justify-content: center;
+	}
+
+	.loading--full-height {
+		align-items: center;
+		height: 100%;
+	}
+
+	.loading::after {
+		content: "";
+		width: 2rem;
+		height: 2rem;
+		border: 0.2rem solid transparent;
+		border-top-color: hsl(var(--white));
+		border-right-color: hsl(var(--white));
+		border-radius: 50%;
+		animation: loading 0.75s linear infinite;
+	}
+
+	@keyframes loading {
+		to {
+			transform: rotate(1turn);
+		}
 	}
 </style>
