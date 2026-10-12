@@ -29,3 +29,4 @@ htpasswd
 
 # the recaptcha key
 src/js/grc-key.js
+public/js/grc-key.js

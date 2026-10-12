@@ -27,6 +27,11 @@ inputnames.forEach((n) => {
 	};
 });
 
+// exception is contactname which is not a required field
+// so we need to set contactname valid to true manually so it can be valid even if it's empty and untouched
+inputsStatus.contactname.valid = true;
+// console.log("contactname.valid:", inputsStatus.contactname.valid);
+
 // tracks whether the form has been changed
 // to allow on blur validation
 // don't want to validate if user is just tabbing through
@@ -41,7 +46,6 @@ let recaptchaResponse = "";
 contactform.addEventListener("change", () => {
 	// console.log('contact form change!');
 	allowblurvalidate = true;
-	disableSubmit(true);
 });
 
 // eventlistener for input focusouts/ blurs
@@ -56,7 +60,9 @@ contactform.addEventListener("submit", (e) => {
 	// don't need an argument with validateForm anymore
 	// it's only ever called by the submit event
 	// validateForm('submit');
-	validateForm();
+
+	console.log("Submitting form through submit event");
+	submitForm();
 });
 
 // little function to remove hyphen from input names (e.target.name)
@@ -102,13 +108,43 @@ function checkInputsValid() {
 	return true;
 }
 
+// function to check if any of the inputs have active error messages
+// NB this returns TRUE if there ARE errors, FALSE if no errors
+function checkInputErrors() {
+	for (const key in inputsStatus) {
+		// skip loop if the property is from prototype
+		if (!inputsStatus.hasOwnProperty(key)) continue;
+		const obj = inputsStatus[key];
+		if (obj.errormsg.length > 0) {
+			console.log("disablesubmit ran and checked input errors, which returned false because: " + key);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function submitForm() {
+	console.log("SubmitForm function running");
+	if (validateForm() === true) {
+		console.log("Form validated. LFG.");
+		displayLoading();
+		fetchForm();
+	} else {
+		console.log("Form didn't validate. Go figure.");
+	}
+}
+
 // validates the whole form
 // doesn't take any parameters anymore as
-// it's only ever called by the submit event
+// it's only ever called by the submitForm function
 function validateForm() {
-	// console.log('validating form');
+	console.log("validating form");
 
 	// check all the inputs
+	// this is will update the 'valid' and 'errormsg' properties for each input
+	// so if there are any errors / invalid inputs, checkInputsValid() will return false and this function will return false
+	// if not it'll return true
 	inputnames.forEach((n) => validateInput(n));
 
 	// ============= submit ===========================
@@ -120,12 +156,11 @@ function validateForm() {
 
 		// displayLoading is only called once, but might be useful
 		// elsewhere so keep it as named function
-		displayLoading();
-		fetchForm();
-	} else {
-		// console.log('Not fetching form');
-		// see https://stackoverflow.com/questions/16861325/honeypot-implementation
+		return true;
 	}
+	// console.log('Not fetching form');
+	// see https://stackoverflow.com/questions/16861325/honeypot-implementation
+	return false;
 }
 
 // right, gonna try a separate function for the blur validation
@@ -151,7 +186,7 @@ function validateInput(input) {
 			// check for maxlength
 			// input maxlength is limiting the inout to 50, but leave the check here for good measure
 			errorMsg = contactname.value.length > 50 ? "No more than 50 characters for your name, please!" : "";
-			errorMessage("contact", "name", errorMsg);
+
 			break;
 
 		// ==================== email ==========================
@@ -172,7 +207,6 @@ function validateInput(input) {
 				errorMsg = "Email address cannot be more than 254 characters.";
 			}
 
-			errorMessage("contact", "email", errorMsg);
 			break;
 
 		// ==================== message ==========================
@@ -186,7 +220,6 @@ function validateInput(input) {
 				errorMsg = "Message cannot be more than 6000 characters, sorry!";
 			}
 
-			errorMessage("contact", "message", errorMsg);
 			break;
 
 		// ==================== recaptcha ==========================
@@ -196,10 +229,20 @@ function validateInput(input) {
 			// console.log(recaptchaResponse);
 
 			errorMsg = recaptchaResponse.length === 0 ? "Please confirm that you're not a robot!" : "";
-			errorMessage("contact", "recaptcha", errorMsg);
 	}
 
+	// do the error message
+	errorMessage(input, errorMsg);
+
+	// update the relevant entries in inputsStatus
+	inputsStatus[input].valid = errorMsg.length > 0 ? false : true;
+	console.log("updating valid:", inputsStatus[input].valid);
+	console.log("updating error message with:", errorMsg);
+	inputsStatus[input].errormsg = errorMsg;
+
 	// always check if it's ok to enable the submit button
+
+	/*
 	if (checkInputsValid() === true) {
 		console.log("Form is good to go");
 		disableSubmit(false);
@@ -208,32 +251,28 @@ function validateInput(input) {
 		console.log("Form is bad");
 		disableSubmit(true);
 	}
+	*/
+
+	// I think I want to link the submit button disabling to the error message
+	// i.e. the submit button is only disabled if there are active error messages
+	// not just if the form is good to go (because this includes the recaptcha)
+
+	// if there are no error messages enable the submit, if there are, then disable the submit
+	// NB checkInputErrors returns TRUE if there ARE errors, FALSE if no errors
+
+	disableSubmit(checkInputErrors());
 }
 
-function errorMessage(form, input, text) {
+function errorMessage(input, text) {
 	// console.log('errorMessage function for ' + form + '-' + input + '-error');
-
-	// update the inputsStatus object
-
-	console.log("updating error message with:", text);
-	// this should happen somewhere else! errorMessage should just do the error messages
-	// like, inputstatus should reflect whether the input is validated, not whether there's an error message associated with it
-	// however that's not the reason it's breaking
-	// it's breaking because contactname doesn't get validated if user doesn't focus the contactname input or enter anything in it
-	// because allowValidate is false until the form is changed in some way.
-	inputsStatus[form + input].valid = text.length > 0 ? false : true;
-	inputsStatus[form + input].errormsg = text;
-
-	// console.log('valid: ' + inputsStatus[form + input].valid);
-	// console.log('errormsg: ' + inputsStatus[form + input].errormsg);
 
 	// get a reference to the errormessage element
 	// we're looking for the span with class 'contact-error-content' INSIDE the div with id 'contact-{input}-error'
-	const errorElement = document.querySelector("#" + form + "-" + input + "-error .contact-error-content");
+	const errorElement = document.querySelector("#" + input + "-error .contact-error-content");
 
 	// new for day eight, get a reference to the accessible visually hidden error message inside the label
 	// think I must have have forgotten to do this originally, oops
-	const errorElementHidden = document.querySelector("#" + form + "-" + input + "-error-hidden");
+	const errorElementHidden = document.querySelector("#" + input + "-error-hidden");
 
 	// template literal version
 	// const errorElement = document.querySelector(`#${form}-${input}-error .contact-error-content`);
@@ -269,7 +308,7 @@ async function fetchForm() {
 		token: recaptchaResponse,
 	};
 
-	// console.log('Doing the fetch function');
+	console.log("Doing the fetch function", contactObj);
 
 	try {
 		// await the fetch
@@ -293,6 +332,8 @@ async function fetchForm() {
 		// following was named function (successMessage();)
 		// but it was only called once and is just two other function calls
 
+		console.log("Fetch was successful I guess");
+
 		// hide the submit button
 		setVisible(contactsubmit, false);
 
@@ -305,7 +346,7 @@ async function fetchForm() {
 }
 
 function verifyRecaptcha(token) {
-	console.log("verify recaptcha", token);
+	console.log("verify recaptcha");
 	recaptchaResponse = token;
 
 	// right gonna try this as part of the validation!
@@ -314,6 +355,8 @@ function verifyRecaptcha(token) {
 	// also validate the name input here as well
 	// in case it's never been focusouted
 	// if it doesn't get validated the submit button won't activate
+
+	// this is not the place to do this!!
 	validateInput("contactname");
 }
 
@@ -370,6 +413,8 @@ function displayLoading() {
 	// and clear the loadingDiv child node
 
 	contactsubmit.textContent = "";
+	// temp
+	// contactsubmit.textContent = "LOADING YEAH?";
 
 	const loadingDiv = document.createElement("div");
 	loadingDiv.classList.add("loading");
@@ -379,7 +424,20 @@ function displayLoading() {
 
 function disableSubmit(disable) {
 	// console.log("disable submit", disable);
+
+	// apparently disabling buttons in html or javascript is bad for accessibility
+	// see: https://gomakethings.com/articles/dont-disable-buttons/
+	// so let's just use styles to indicate that the submit button is ready to be clicked
+
+	/*
+	// disable the button
+	contactsubmit.disabled = disable;
+	// update the aria
+	contactsubmit.ariaDisabled = disable;
+	*/
+
 	if (disable === true) {
+		// add the class
 		if (!contactsubmit.classList.contains("disabled")) {
 			contactsubmit.classList.add("disabled");
 		}

@@ -76,19 +76,19 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 					<h2 class="contactsection__heading serif-regular">Say hello.</h2>
 
-					<form action="" class="contactsection__form" id="contact-form">
+					<form action="#" method="post" class="contactsection__form" id="contact-form" novalidate>
 						<!-- group the inputs is their own div -->
 						<div class="form__inputs">
 							<div class="input-and-label">
 								<label for="contact-name"
-									>Name <span class="visually-hidden" id="contact-name-error-hidden"></span>
+									>Name <span class="visually-hidden" id="contactname-error-hidden"></span>
 								</label>
 								<input type="text" name="contact-name" id="contact-name" />
 							</div>
 							<div class="input-and-label">
 								<label for="contact-email"
 									>Email <span class="label-required">(required)</span>
-									<span class="visually-hidden" id="contact-email-error-hidden"></span>
+									<span class="visually-hidden" id="contactemail-error-hidden"></span>
 								</label>
 								<input type="text" name="contact-email" id="contact-email" />
 							</div>
@@ -97,7 +97,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 						<div class="textarea-and-label">
 							<label for="contact-message"
 								>Message <span class="label-required">(required)</span>
-								<span class="visually-hidden" id="contact-message-error-hidden"></span>
+								<span class="visually-hidden" id="contactmessage-error-hidden"></span>
 							</label>
 							<textarea name="contact-message" id="contact-message"></textarea>
 						</div>
@@ -107,7 +107,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 						<div class="contactsection__recaptcha">
 							<!-- recaptcha explicit rendering -->
 							<div id="contact-recaptcha" class="g-recaptcha"></div>
-							<span class="visually-hidden" id="contact-recaptcha-error-hidden"></span>
+							<span class="visually-hidden" id="contactrecaptcha-error-hidden"></span>
 							<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
 								<span class="contact-error-content"><!-- empty to start --></span>
 							</div>
@@ -127,19 +127,19 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 					<!-- rather than it only displaying one error message at a time -->
 
 					<!-- maybe just stick them all here for the time being while we're testing it -->
-					<div class="contact-error" id="contact-name-error" aria-hidden="true">
+					<div class="contact-error" id="contactname-error" aria-hidden="true">
 						<span class="contact-error-content"><!-- empty to start --></span>
 					</div>
 
-					<div class="contact-error" id="contact-email-error" aria-hidden="true">
+					<div class="contact-error" id="contactemail-error" aria-hidden="true">
 						<span class="contact-error-content"><!-- empty to start --></span>
 					</div>
 
-					<div class="contact-error" id="contact-message-error" aria-hidden="true">
+					<div class="contact-error" id="contactmessage-error" aria-hidden="true">
 						<span class="contact-error-content"><!-- empty to start --></span>
 					</div>
 
-					<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
+					<div class="contact-error" id="contactrecaptcha-error" aria-hidden="true">
 						<span class="contact-error-content"><!-- empty to start --></span>
 					</div>
 
@@ -153,15 +153,16 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	</Main>
 </Layout>
 
-<script src="/src/js/contact.js"></script>
-
 <script src="/src/js/decodeEmail.js"></script>
 
 <!-- probably need this recaptcha stuff is:inline -->
 
 <!-- safest to put recaptcha inline, external was unreliable -->
 <!-- first get the key from the gitignored js file -->
-<script src="/src/js/grc-key.js" is:inline></script>
+<script src="/js/grc-key.js" is:inline></script>
+<!-- order of these scripts makes a difference for some reason, so leave as is! -->
+<script src="/js/contact.js" is:inline></script>
+<!-- <script src="/src/js/decodeEmail.js"></script> -->
 <script is:inline>
 	// recaptcha - explicit rendering - onload callback
 	// NB has to be var! and also anonymous function
@@ -516,6 +517,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	.contactsection__form button {
 		font-size: 2rem;
 		width: 50%;
+		min-height: 3rem;
 		margin-block-start: 2rem;
 	}
 
@@ -558,7 +560,13 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	.contact-error-content {
 		transition: all ease-in-out 250ms;
 	}
+</style>
 
+<!-- loading div and animation stuff has to go inline to get round astro's scoping -->
+<!-- because we're creating the loading div dynamically it doesn't get processed by astro -->
+<!-- and none-inline styles won't be applied won't work without the scoping data attribute that astro adds -->
+
+<style is:inline>
 	/* loading animation for the submit button while form is fetch()ing - might put this in global as well, if we use it elsewhere */
 
 	.loading {
