@@ -312,7 +312,7 @@ async function fetchForm() {
 
 	try {
 		// await the fetch
-		const fetchResponse = await fetch("php/contact_process.php", {
+		const fetchResponse = await fetch("/php/contact_process.php", {
 			method: "post",
 			body: JSON.stringify(contactObj),
 			headers: {
@@ -332,7 +332,7 @@ async function fetchForm() {
 		// following was named function (successMessage();)
 		// but it was only called once and is just two other function calls
 
-		console.log("Fetch was successful I guess");
+		console.log("Fetch was successful I guess", text);
 
 		// hide the submit button
 		setVisible(contactsubmit, false);
