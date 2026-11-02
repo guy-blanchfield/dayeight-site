@@ -76,26 +76,77 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 					<h2 class="contactsection__heading serif-regular">Say hello.</h2>
 
-					<form action="" class="contactsection__form">
+					<form action="#" method="post" class="contactsection__form" id="contact-form" novalidate>
 						<!-- group the inputs is their own div -->
 						<div class="form__inputs">
 							<div class="input-and-label">
-								<label for="name">Name</label>
-								<input type="text" name="name" id="name" />
+								<label for="contact-name"
+									>Name <span class="visually-hidden" id="contactname-error-hidden"></span>
+								</label>
+								<input type="text" name="contact-name" id="contact-name" />
 							</div>
 							<div class="input-and-label">
-								<label for="email">Email</label>
-								<input type="text" name="email" id="email" />
+								<label for="contact-email"
+									>Email <span class="label-required">(required)</span>
+									<span class="visually-hidden" id="contactemail-error-hidden"></span>
+								</label>
+								<input type="text" name="contact-email" id="contact-email" />
 							</div>
 						</div>
 
 						<div class="textarea-and-label">
-							<label for="message">Message</label>
-							<textarea name="message" id="message"></textarea>
+							<label for="contact-message"
+								>Message <span class="label-required">(required)</span>
+								<span class="visually-hidden" id="contactmessage-error-hidden"></span>
+							</label>
+							<textarea name="contact-message" id="contact-message"></textarea>
 						</div>
 
-						<button class="content__button content__button--pink serif-regular">Send.</button>
+						<!-- ============== recaptcha ============== -->
+						<!-- let's have a container for the recaptcha, keep things tidy -->
+						<div class="contactsection__recaptcha">
+							<!-- recaptcha explicit rendering -->
+							<div id="contact-recaptcha" class="g-recaptcha"></div>
+							<span class="visually-hidden" id="contactrecaptcha-error-hidden"></span>
+							<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
+								<span class="contact-error-content"><!-- empty to start --></span>
+							</div>
+						</div>
+
+						<!-- button type submit here NOT input type submit so we can add the waiting animation inside it i think? -->
+						<button
+							type="submit"
+							class="contact-submit content__button content__button--pink serif-regular"
+							name="contact-submit"
+							id="contact-submit">Send.</button
+						>
 					</form>
+
+					<!-- just do one error-message area, there isn't really any room for dedicated error messages for each input -->
+					<!-- we'll probably need to create each message dynamically so they can all be visible at the same time -->
+					<!-- rather than it only displaying one error message at a time -->
+
+					<!-- maybe just stick them all here for the time being while we're testing it -->
+					<div class="contact-error" id="contactname-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<div class="contact-error" id="contactemail-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<div class="contact-error" id="contactmessage-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<div class="contact-error" id="contactrecaptcha-error" aria-hidden="true">
+						<span class="contact-error-content"><!-- empty to start --></span>
+					</div>
+
+					<!-- success message -->
+					<div id="contact-success" class="contact-success" data-visible="false" aria-hidden="true">
+						Thank you for your message
+					</div>
 				</div>
 			</section>
 		</div>
@@ -103,6 +154,43 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 </Layout>
 
 <script src="/src/js/decodeEmail.js"></script>
+
+<!-- NB!! js files that are is:inline have to go in public -->
+<!-- so that's where you'll find them (public/js NOT src/js) -->
+
+<!-- probably need this recaptcha stuff is:inline -->
+
+<!-- safest to put recaptcha inline, external was unreliable -->
+<!-- first get the key from the gitignored js file -->
+<script src="/js/grc-key.js" is:inline></script>
+<!-- order of these scripts makes a difference for some reason, so leave as is! -->
+<script src="/js/contact.js" is:inline></script>
+<!-- <script src="/src/js/decodeEmail.js"></script> -->
+<script is:inline>
+	// recaptcha - explicit rendering - onload callback
+	// NB has to be var! and also anonymous function
+
+	// env variables are now a massive hassle in astro so let's just use a js file and gitignore it
+	// if you really want to do the .env thing see https://youtu.be/kTceOl4qCm0
+	// but it looks pretty complicated and unnecessary for our purposes
+
+	// could we use php to insert the key somehow?
+
+	console.log("grcKey:", grcKey);
+
+	var onloadCallback = function () {
+		grecaptcha.render("contact-recaptcha", {
+			// real key
+
+			sitekey: grcKey,
+			callback: "verifyRecaptcha",
+			"expired-callback": "recaptchaExpired",
+		});
+	};
+</script>
+
+<script is:inline src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer
+></script>
 
 <style define:vars={{ daydreamBgImage, mapBgImage }}>
 	.intro {
@@ -253,6 +341,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 	.contactpage__contactsection {
 		background-color: hsl(var(--background-dark));
+		color: hsl(var(--white));
 		display: flex;
 		align-items: center;
 
@@ -409,6 +498,11 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		/* font-size: small; */
 	}
 
+	.contactsection__form label span.label-required {
+		font-size: smaller;
+		color: hsl(var(--pink));
+	}
+
 	.form__inputs {
 		display: flex;
 		flex-direction: column;
@@ -426,6 +520,88 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	.contactsection__form button {
 		font-size: 2rem;
 		width: 50%;
+		min-height: 3rem;
 		margin-block-start: 2rem;
+	}
+
+	/* gonna put disabled class here, put it in global if we end up using elsewhere */
+	.contactsection__form button.disabled {
+		background-color: #ccc;
+	}
+
+	.contactsection__recaptcha {
+		margin-block-start: 2rem;
+	}
+
+	/* submit button */
+	.contact-submit[data-visible="false"] {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	/* success message */
+	.contact-success {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		/* transform: translateY(-100%); */
+		visibility: hidden;
+		opacity: 0;
+	}
+
+	.contact-success[data-visible="true"] {
+		visibility: visible;
+		opacity: 1;
+	}
+
+	/* error message stuff */
+
+	.contact-error-content {
+		/* opacity for now */
+		opacity: 0;
+	}
+
+	.contact-error-content.show {
+		opacity: 1;
+	}
+
+	.contact-error-content {
+		transition: all ease-in-out 250ms;
+	}
+</style>
+
+<!-- loading div and animation stuff has to go inline to get round astro's scoping -->
+<!-- because we're creating the loading div dynamically it doesn't get processed by astro -->
+<!-- and none-inline styles won't be applied won't work without the scoping data attribute that astro adds -->
+
+<style is:inline>
+	/* loading animation for the submit button while form is fetch()ing - might put this in global as well, if we use it elsewhere */
+
+	.loading {
+		display: flex;
+		justify-content: center;
+	}
+
+	.loading--full-height {
+		align-items: center;
+		height: 100%;
+	}
+
+	.loading::after {
+		content: "";
+		width: 2rem;
+		height: 2rem;
+		border: 0.2rem solid transparent;
+		border-top-color: hsl(var(--white));
+		border-right-color: hsl(var(--white));
+		border-radius: 50%;
+		animation: loading 0.75s linear infinite;
+	}
+
+	@keyframes loading {
+		to {
+			transform: rotate(1turn);
+		}
 	}
 </style>

@@ -1,0 +1,16 @@
+For info about legacy recaptcha and ideas about alternatives:
+
+https://www.reddit.com/r/webdev/comments/1lxgars/google_recaptcha_has_become_insanely_complex_for/
+
+Recaptcha legacy admin is here:
+
+https://www.google.com/recaptcha/admin/
+
+settings for dayeight:
+
+https://www.google.com/recaptcha/admin/site/770136098/settings
+
+
+how to implement the v2 invisible challenge:
+
+https://developers.google.com/recaptcha/docs/invisible
