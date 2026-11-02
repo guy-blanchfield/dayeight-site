@@ -357,7 +357,8 @@ function verifyRecaptcha(token) {
 	// if it doesn't get validated the submit button won't activate
 
 	// this is not the place to do this!!
-	validateInput("contactname");
+	// don't need to do this here because validateForm() executes a foreach that runs validateInput(n) for all the inputs
+	// validateInput("contactname");
 }
 
 // for when the recaptcha expires - see html attribute data-expired-callback="handleCaptchaExpired"
