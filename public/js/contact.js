@@ -1,5 +1,8 @@
 console.log("contact.js running");
 
+// get all the references to the inputs in an object, see how it goes
+// yeah this worked, but it's of pretty limited value, not really worth it
+
 const contactname = document.getElementById("contact-name");
 // nickname is the honey pot, which I don't think we're using anymore
 // const contactnickname = document.getElementById("contact-nickname");
@@ -9,6 +12,23 @@ const contactsubmit = document.getElementById("contact-submit");
 const contactform = document.getElementById("contact-form");
 const contactsuccess = document.getElementById("contact-success");
 
+// new for day eight, onclicks for the parent divs of the inputs and textarea
+// to focus the inputs if user clicks anywhere near them
+const inputParents = document.querySelectorAll(".input-and-label, .textarea-and-label");
+// console.log("inputParents", inputParents);
+for (const inputParent of inputParents) {
+	inputParent.addEventListener("click", focusInput);
+}
+
+function focusInput() {
+	// NB we can't use event.target here because that's the element that was clicked
+	// what we want is the element that triggered the event (inputParent) so we need 'this'
+	// console.log("this:", this);
+	const targetInput = this.querySelector("input, textarea");
+	targetInput.focus();
+	// console.log("focusInput targetInput", targetInput);
+}
+
 // new for day eight, let's have a var for the submit button text
 // when user submits form the text dispappears and is replaced by a waiting animation (displayLoading())
 const contactsubmittext = contactsubmit.textContent;
@@ -16,7 +36,9 @@ const contactsubmittext = contactsubmit.textContent;
 // recaptcha callback was here - moved back to inline in head
 
 // just do inputsStatus manually for now
-const inputnames = ["contactname", "contactemail", "contactmessage", "contactrecaptcha"];
+// const inputnames = ["contactname", "contactemail", "contactmessage", "contactrecaptcha"];
+// no need to validate recaptcha now that we're using v2 invisible
+const inputnames = ["contactname", "contactemail", "contactmessage"];
 // const inputnames = ["contactname", "contactemail", "contactmessage"];
 const inputsStatus = {};
 
@@ -54,6 +76,10 @@ contactform.addEventListener("change", () => {
 contactform.addEventListener("focusout", focusEventHandler);
 
 // eventlistener for submit
+
+// don't need this for the time being
+// don't think we even need the  prevent default here, the recaptcha callback will handle everything
+// don't think the form is even submitting
 contactform.addEventListener("submit", (e) => {
 	// console.log("submitted");
 	e.preventDefault();
@@ -61,8 +87,8 @@ contactform.addEventListener("submit", (e) => {
 	// it's only ever called by the submit event
 	// validateForm('submit');
 
-	console.log("Submitting form through submit event");
-	submitForm();
+	console.log("Submit event fired");
+	// submitForm();
 });
 
 // little function to remove hyphen from input names (e.target.name)
@@ -124,12 +150,15 @@ function checkInputErrors() {
 	return false;
 }
 
-function submitForm() {
-	console.log("SubmitForm function running");
+function submitForm(token) {
+	console.log("SubmitForm function running, hopefully from the callback! Token is ", token);
+
 	if (validateForm() === true) {
 		console.log("Form validated. LFG.");
 		displayLoading();
-		fetchForm();
+		// pass the token into fetchform because previously the token was set in the fetch
+		// after the recaptcha callback (verifyRecaptcha) sets recaptchaResponse to the token
+		fetchForm(token);
 	} else {
 		console.log("Form didn't validate. Go figure.");
 	}
@@ -168,6 +197,7 @@ function validateInput(input) {
 	console.log("validating input with input: " + input);
 
 	let errorMsg = "";
+	// let invalidInput;
 
 	switch (input) {
 		// ==================== name ==========================
@@ -186,7 +216,7 @@ function validateInput(input) {
 			// check for maxlength
 			// input maxlength is limiting the inout to 50, but leave the check here for good measure
 			errorMsg = contactname.value.length > 50 ? "No more than 50 characters for your name, please!" : "";
-
+			// invalidInput = contactname;
 			break;
 
 		// ==================== email ==========================
@@ -199,13 +229,16 @@ function validateInput(input) {
 			// think the simplest pattern to .test is /^\S+@\S+$/
 			const r = /^\S+@\S+$/;
 			if (contactemail.value !== "" && r.test(contactemail.value) !== true) {
-				errorMsg = "Please provide a properly formatted email address";
+				// errorMsg = "Please provide a properly formatted email address";
+				errorMsg = "Please enter an email address";
 			}
 
 			// check for maxlength
 			if (contactemail.value.length > 320) {
 				errorMsg = "Email address cannot be more than 254 characters.";
 			}
+
+			// invalidInput = contactemail;
 
 			break;
 
@@ -220,6 +253,8 @@ function validateInput(input) {
 				errorMsg = "Message cannot be more than 6000 characters, sorry!";
 			}
 
+			// invalidInput = contactmessage;
+
 			break;
 
 		// ==================== recaptcha ==========================
@@ -233,6 +268,8 @@ function validateInput(input) {
 
 	// do the error message
 	errorMessage(input, errorMsg);
+	// adds or removes an invalid class on the input / textarea, depending if there's an error message
+	highlightField(input, errorMsg.length > 0);
 
 	// update the relevant entries in inputsStatus
 	inputsStatus[input].valid = errorMsg.length > 0 ? false : true;
@@ -296,20 +333,36 @@ function errorMessage(input, text) {
 	// console.log(targetElement);
 }
 
+function highlightField(input, err) {
+	// traversing the dom again, even though I'm sure there's a better way
+	// 7 being the length of "contact" - we're trying to find what's after contact
+	// e.g. contactNAME, contactEMAIL
+	const id = input.substring(7, input.length);
+	// console.log("id:", id);
+	const targetField = document.getElementById("contact-" + id);
+	// console.log("targetField:", targetField);
+	if (err) {
+		targetField.classList.add("invalid-input");
+	} else {
+		targetField.classList.remove("invalid-input");
+	}
+}
+
 // try as async await
 // https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises#async_and_await
-async function fetchForm() {
+async function fetchForm(token) {
 	// add the input values to the object
 	const contactObj = {
 		name: contactname.value,
 		email: contactemail.value,
 		msg: contactmessage.value,
 		// the recaptcha token
-		token: recaptchaResponse,
+		token: token,
 	};
 
 	console.log("Doing the fetch function", contactObj);
 
+	/*
 	try {
 		// await the fetch
 		const fetchResponse = await fetch("/php/contact_process.php", {
@@ -343,6 +396,8 @@ async function fetchForm() {
 		// do something with the error
 		console.error(`Could not do the fetch: ${error}`);
 	}
+
+	*/
 }
 
 function verifyRecaptcha(token) {

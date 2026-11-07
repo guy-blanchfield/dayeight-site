@@ -14,6 +14,8 @@ import obfuscateEmail from "../js/obfuscateEmail";
 // don't know much about the second parameter of obfuscateEmail
 // other than it's used to generate a hex key, and in the example it's a 3 digit number
 const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
+
+import grcKey from "../js/grcKey.js";
 ---
 
 <Layout
@@ -76,7 +78,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 					<h2 class="contactsection__heading serif-regular">Say hello.</h2>
 
-					<form action="#" method="post" class="contactsection__form" id="contact-form" novalidate>
+					<form action="?" method="post" class="contactsection__form" id="contact-form" novalidate>
 						<!-- group the inputs is their own div -->
 						<div class="form__inputs">
 							<div class="input-and-label">
@@ -84,13 +86,21 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 									>Name <span class="visually-hidden" id="contactname-error-hidden"></span>
 								</label>
 								<input type="text" name="contact-name" id="contact-name" />
+								<!-- error message for name -->
+								<div class="contact-error" id="contactname-error" aria-hidden="true">
+									<span class="contact-error-content"><!-- empty to start --></span>
+								</div>
 							</div>
+
 							<div class="input-and-label">
 								<label for="contact-email"
 									>Email <span class="label-required">(required)</span>
-									<span class="visually-hidden" id="contactemail-error-hidden"></span>
-								</label>
+									<span class="visually-hidden" id="contactemail-error-hidden"></span></label
+								>
 								<input type="text" name="contact-email" id="contact-email" />
+								<div class="contact-error" id="contactemail-error" aria-hidden="true">
+									<span class="contact-error-content"><!-- empty to start --></span>
+								</div>
 							</div>
 						</div>
 
@@ -100,25 +110,28 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 								<span class="visually-hidden" id="contactmessage-error-hidden"></span>
 							</label>
 							<textarea name="contact-message" id="contact-message"></textarea>
-						</div>
-
-						<!-- ============== recaptcha ============== -->
-						<!-- let's have a container for the recaptcha, keep things tidy -->
-						<div class="contactsection__recaptcha">
-							<!-- recaptcha explicit rendering -->
-							<div id="contact-recaptcha" class="g-recaptcha"></div>
-							<span class="visually-hidden" id="contactrecaptcha-error-hidden"></span>
-							<div class="contact-error" id="contact-recaptcha-error" aria-hidden="true">
+							<!-- error message for message -->
+							<div class="contact-error" id="contactmessage-error" aria-hidden="true">
 								<span class="contact-error-content"><!-- empty to start --></span>
 							</div>
 						</div>
 
+						<!-- ============== recaptcha ============== -->
+						<!-- let's have a container for the recaptcha, keep things tidy -->
+
+						<!-- <div class="contactsection__recaptcha"> -->
+						<!-- recaptcha explicit rendering -->
+						<!-- now using invisible recaptcha -->
+						<!-- </div> -->
+
 						<!-- button type submit here NOT input type submit so we can add the waiting animation inside it i think? -->
 						<button
 							type="submit"
-							class="contact-submit content__button content__button--pink serif-regular"
+							class="g-recaptcha contact-submit content__button content__button--pink serif-regular"
 							name="contact-submit"
-							id="contact-submit">Send.</button
+							id="contact-submit"
+							data-sitekey={grcKey}
+							data-callback="onSubmit">Send.</button
 						>
 					</form>
 
@@ -127,21 +140,12 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 					<!-- rather than it only displaying one error message at a time -->
 
 					<!-- maybe just stick them all here for the time being while we're testing it -->
-					<div class="contact-error" id="contactname-error" aria-hidden="true">
-						<span class="contact-error-content"><!-- empty to start --></span>
-					</div>
 
-					<div class="contact-error" id="contactemail-error" aria-hidden="true">
-						<span class="contact-error-content"><!-- empty to start --></span>
-					</div>
-
-					<div class="contact-error" id="contactmessage-error" aria-hidden="true">
-						<span class="contact-error-content"><!-- empty to start --></span>
-					</div>
-
+					<!-- 
 					<div class="contact-error" id="contactrecaptcha-error" aria-hidden="true">
-						<span class="contact-error-content"><!-- empty to start --></span>
+						<span class="contact-error-content"></span>
 					</div>
+					-->
 
 					<!-- success message -->
 					<div id="contact-success" class="contact-success" data-visible="false" aria-hidden="true">
@@ -162,10 +166,28 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 <!-- safest to put recaptcha inline, external was unreliable -->
 <!-- first get the key from the gitignored js file -->
-<script src="/js/grc-key.js" is:inline></script>
+<!-- we don't need to get the key this way now, we import it in the front matter and it goes in a data-attribute in the submit button html -->
+<!-- <script src="/js/grc-key.js" is:inline></script> -->
 <!-- order of these scripts makes a difference for some reason, so leave as is! -->
 <script src="/js/contact.js" is:inline></script>
 <!-- <script src="/src/js/decodeEmail.js"></script> -->
+
+<!-- how to implement invisible v2 recaptcha -->
+<!-- https://developers.google.com/recaptcha/docs/invisible -->
+
+<script is:inline src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script is:inline>
+	function onSubmit(token) {
+		// document.getElementById("demo-form").submit();
+		// we don't want to submit the form
+		// document.getElementById("contact-form").submit();
+		// just log the token for now
+		submitForm(token);
+	}
+</script>
+
+<!-- 
 <script is:inline>
 	// recaptcha - explicit rendering - onload callback
 	// NB has to be var! and also anonymous function
@@ -176,7 +198,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 	// could we use php to insert the key somehow?
 
-	console.log("grcKey:", grcKey);
+	// console.log("grcKey:", grcKey);
 
 	var onloadCallback = function () {
 		grecaptcha.render("contact-recaptcha", {
@@ -188,9 +210,12 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		});
 	};
 </script>
+ -->
 
+<!--
 <script is:inline src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer
 ></script>
+-->
 
 <style define:vars={{ daydreamBgImage, mapBgImage }}>
 	.intro {
@@ -420,9 +445,31 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		}
 	}
 
-	/* contact form stuff */
+	/* ---------------------------- contact form stuff --------------------------------------------- */
+
+	/* hack to stop chrome autocomplete turning the input blue */
+	/* from: https://stackoverflow.com/questions/55131944/how-to-remove-blue-background-on-chrome-autocomplete */
+
+	/* nah this leaves a blue outline, presumably something to do with the transparent border */
+	/*
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	textarea:-webkit-autofill,
+	textarea:-webkit-autofill:hover,
+	textarea:-webkit-autofill:focus,
+	select:-webkit-autofill,
+	select:-webkit-autofill:hover,
+	select:-webkit-autofill:focus {
+		-webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+	}
+	*/
 
 	.contactsection__form {
+		/* variables for input border styles */
+		--border-thickness: 1.5px;
+		--border-radius: 0;
+
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
@@ -437,18 +484,31 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	}
 
 	.contactsection__form :is(input, textarea) {
-		border: none;
+		/* we need invisible or same-colour-as-background borders here to prevent layout shift */
+		border: var(--border-thickness) solid transparent;
+		border-radius: var(--border-radius);
+		/* outline: none; */
 		margin: 0;
 		padding: 0;
+		/* padding-block: 0; */
+		/* padding-inline: 0.2rem; */
+
+		/* animate the border-color change? */
+		transition: all ease-in-out 250ms;
 	}
 
 	.contactsection__form :is(input, textarea):focus-visible {
-		/* border: 1px solid hsl(var(--lightgrey)); */
+		/* border: 2px solid hsl(var(--lightgrey) / 10%); */
 		outline: none;
-		/* background-color: hsl(var(--lightgrey)); */
-		background-color: #eee;
-		margin: 0;
-		padding: 0;
+		background-color: hsl(var(--lightestgrey));
+		/* background-color: #eee; */
+	}
+
+	/* consider rethinking the form validation using native :invalid functionality */
+	/* but for now we'll just apply a class to the input / textarea if if fails validation */
+	.contactsection__form :is(input, textarea).invalid-input {
+		border: var(--border-thickness) solid hsl(var(--pink) / 50%);
+		/* background-color: hsl(var(--pink) / 5%); */
 	}
 
 	.contactsection__form input:not(textarea) {
@@ -462,7 +522,11 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		background-color: hsl(var(--white));
 		/* border: 1px solid blue; */
 		padding-block: 0.2rem;
-		padding-inline: 0.5rem;
+		padding-inline-start: 0.5rem;
+		padding-inline-end: 0.7rem;
+	}
+
+	.contactsection__form .input-and-label > * {
 	}
 
 	@media (min-width: 992px) {
@@ -486,8 +550,11 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		display: flex;
 		flex-direction: column;
 		background-color: hsl(var(--white));
-		/* border: 1px solid green; */
-		padding: 0.5rem;
+		border: 1px solid green;
+		/* padding: 0.5rem; */
+		padding-block: 0.2rem;
+		padding-inline-start: 0.5rem;
+		padding-inline-end: 0.7rem;
 	}
 
 	.contactsection__form label {
@@ -522,11 +589,21 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		width: 50%;
 		min-height: 3rem;
 		margin-block-start: 2rem;
+		outline: none;
+	}
+
+	.contactsection__form button:is(:focus-visible) {
+		outline: 2px solid hsl(var(--white));
 	}
 
 	/* gonna put disabled class here, put it in global if we end up using elsewhere */
 	.contactsection__form button.disabled {
-		background-color: #ccc;
+		background-color: hsl(var(--lightergrey));
+		/* color: hsl(var(--lightgrey)); */
+	}
+
+	.contactsection__form button.disabled:is(:focus-visible) {
+		outline: none;
 	}
 
 	.contactsection__recaptcha {
@@ -557,9 +634,28 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 	/* error message stuff */
 
+	.contact-error {
+		/* border: 1px solid aqua; */
+		/* width: 100%; */
+		/* we need a height here, otherwise the flex stretch wants to add about another line's worth of space
+		at the bottom of the parent container (.form-inputs). Maybe there's a btter solution but I couldn't find one */
+		height: 1.5rem;
+	}
+
 	.contact-error-content {
+		color: hsl(var(--pink));
+		font-size: smaller;
+		font-weight: bold;
 		/* opacity for now */
 		opacity: 0;
+		/*  */
+		/* padding: 0; */
+		/* margin: 0; */
+		/* display: block; */
+		/* border: 1px solid fuchsia; */
+		/* width: 100%; */
+		/* overflow: hidden; */
+		/* height: 1rem; */
 	}
 
 	.contact-error-content.show {

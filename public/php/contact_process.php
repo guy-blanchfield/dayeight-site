@@ -1,5 +1,8 @@
 <?php
 
+// get the key from a file that can be gitignored
+require('grc_key.php');
+
 // honeypot from https://www.phptutorial.net/php-tutorial/php-contact-form/
     // check the honeypot
     // $honeypot = filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING);
@@ -22,17 +25,15 @@ if ($contentType === "application/json") {
     // convert the json to a php array
     $data = json_decode($json, true);
 
-    // real secret key
-    $secret_key = '6LciWOctAAAAACefLJwXQs0Q7jGSW4-Y8UP3QoyG'; 
-    // test secret key
-    // $secret_key = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+    // now getting secret key from require (see above)
+    // $secret_key = 'key-was-here';
     $response_token = $data["token"];
 
     // from https://www.texelate.co.uk/blog/use-php-to-validate-google-recaptcha
     
     $querydata = [
 
-        'secret' => $secret_key,
+        'secret' => $grckey,
         'response' => $response_token
     
     ];
@@ -54,6 +55,7 @@ if ($contentType === "application/json") {
         echo 'Verification failed' . "\r\n";
         echo 'Success is: ' . $response["success"] . "\r\n";
         echo 'Error codes: ' . $response["error-codes"] . "\r\n";
+        echo '$grckey is: ' . $grckey . "\r\n";
         echo '$response is: ';
         print_r ($response);
     

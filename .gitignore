@@ -27,10 +27,10 @@ pnpm-debug.log*
 .htpasswd
 htpasswd
 
-# the recaptcha key
-src/js/grc-key.js
-public/js/grc-key.js
+# the recaptcha keys
+src/js/grcKey.js
+public/php/grc_key.php
 
 # the contact form processing file also contains a recaptcha key
 # ignore it for now, until we figure out a better way
-src/php/contact_process.php
+# src/php/contact_process.php

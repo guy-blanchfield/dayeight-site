@@ -68,6 +68,8 @@ html {
 	/* grey */
 	--midgrey: 186 10% 50%;
 	--lightgrey: 186 10% 67%;
+	--lightergrey: 186 10% 75%;
+	--lightestgrey: 186 10% 95%;
 
 	/* applied colours */
 	--text-light: var(--white);
