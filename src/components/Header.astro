@@ -83,6 +83,17 @@ const {
 		/* color: hsl(var(--white)); */
 		color: var(--linkColour);
 		text-decoration: none;
+		padding-block-end: 0.3rem;
+		transition: all ease-in-out 250ms;
+	}
+
+	nav li a:hover {
+		color: hsl(var(--teal));
+	}
+
+	nav li a:focus-visible {
+		border-bottom: 5px solid hsl(var(--teal));
+		outline: none;
 	}
 
 	nav .main-nav__li--home a {
@@ -93,8 +104,9 @@ const {
 		margin-inline-end: 2rem;
 	}
 
-	nav .main-nav__li--home a:is(:hover, :focus-visible) {
-		color: hsl(var(--white) / 88%);
-		/* color: hsl(var(--white)); */
+	nav .main-nav__li--home a:hover {
+		/* color: hsl(var(--white) / 88%); */
+		color: hsl(var(--white));
+		/* border: none; */
 	}
 </style>

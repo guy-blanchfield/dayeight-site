@@ -59,7 +59,8 @@ html {
 	/* desaturated navy for text out of white */
 	--greynavy: 195 50% 14%;
 	--lightgreynavy: 195 50% 25%;
-	--lightergreynavy: 195 10% 50%;
+	--lightergreynavy: 195 25% 40%;
+	--lightergreyernavy: 195 10% 50%;
 
 	/* darker teal for accessible contrast */
 	/* --darkteal: 182 68% 23%; */

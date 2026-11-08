@@ -116,6 +116,8 @@ import grcKey from "../js/grcKey.js";
 							</div>
 						</div>
 
+						<div class="recaptcha-branding">This site is protected by reCAPTCHA.</div>
+
 						<!-- ============== recaptcha ============== -->
 						<!-- let's have a container for the recaptcha, keep things tidy -->
 
@@ -216,6 +218,15 @@ import grcKey from "../js/grcKey.js";
 <script is:inline src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer
 ></script>
 -->
+
+<style is:inline>
+	/* hide the recaptcha badge */
+	/* see: https://developers.google.com/recaptcha/docs/faq */
+	/* this has to be inline because of astro scoping */
+	.grecaptcha-badge {
+		visibility: hidden;
+	}
+</style>
 
 <style define:vars={{ daydreamBgImage, mapBgImage }}>
 	.intro {
@@ -447,6 +458,17 @@ import grcKey from "../js/grcKey.js";
 
 	/* ---------------------------- contact form stuff --------------------------------------------- */
 
+	/* hide the recaptcha badge */
+	/* see: https://developers.google.com/recaptcha/docs/faq */
+	/* this has to be inline because of astro scoping - see above */
+
+	.recaptcha-branding {
+		font-size: smaller;
+		/* color: hsl(var(--white) / 25%); */
+		color: hsl(var(--lightergreynavy));
+		/* margin-left: auto; */
+	}
+
 	/* hack to stop chrome autocomplete turning the input blue */
 	/* from: https://stackoverflow.com/questions/55131944/how-to-remove-blue-background-on-chrome-autocomplete */
 
@@ -573,14 +595,14 @@ import grcKey from "../js/grcKey.js";
 	.form__inputs {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		/* gap: 1rem; */
+		gap: 0.6rem;
 		margin-block-end: 0.6rem;
 	}
 
 	@media (min-width: 992px) {
 		.form__inputs {
 			flex-direction: row;
-			gap: 0.6rem;
 		}
 	}
 
