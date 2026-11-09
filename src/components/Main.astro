@@ -39,9 +39,12 @@ const graffitiBgImage = "url(/images/graffiti-960.jpg)";
 		/* lets have a bg color so it doesn't look shit while the image is loading */
 		background-color: hsl(var(--accent));
 		z-index: -1;
+
+		/* background: none; */
 	}
 
-	@media (min-width: 700px) {
+	/* just do a single breakpoint at 992 for now, was 700 in the holding page */
+	@media (min-width: 992px) {
 		main::before {
 			content: none;
 			/* need to specify background: none otherwise desktop still downloads the image */

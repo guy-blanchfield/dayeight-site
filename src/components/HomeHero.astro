@@ -121,7 +121,10 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 		background-color: hsl(var(--background-light));
 
 		/* margin-bottom so some of the bg image shows through */
-		margin-bottom: 5rem;
+		/* margin-bottom: 5rem; */
+
+		/* position: relative; */
+		/* z-index: 3; */
 	}
 
 	/* hide the pictures on mobile */
@@ -213,6 +216,9 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 		align-items: center;
 		/* padding: 5rem 0 4rem 0; */
 		padding: 4rem 0;
+		padding-block-start: 6rem;
+		padding-block-end: 4rem;
+		padding-inline: 0;
 		/* background-color: aqua; */
 
 		/* position here so we can position the more-link absolutely */
@@ -233,8 +239,9 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 	.day-eight-logo {
 		/* color: white; */
 		/* now doing the logo as black with opacity */
-		color: black;
-		opacity: 20%;
+		color: hsl(var(--black) / 20%);
+		/* color: black; */
+		/* opacity: 20%; */
 		/* astro-icons 1.1 now uses font-size instead of width/height */
 		font-size: 10rem;
 		padding: 0 1rem;
@@ -268,7 +275,8 @@ import oceanImage from "../assets/images/ocean-fullscale.jpg";
 	}
 
 	/* we only really need the down arrow on desktop */
-	@media (min-width: 700px) {
+	/* just do a single breakpoint at 992 for now, was 700 in the holding page */
+	@media (min-width: 992px) {
 		/* this is the flex child of .hero (one of three) */
 		.logo-and-strap {
 			display: flex;

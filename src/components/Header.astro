@@ -4,15 +4,21 @@ import { Icon } from "astro-icon/components";
 export interface Props {
 	bgColour?: string;
 	linkColour?: string;
+	linkColourHover?: string;
+	linkColourFocus?: string;
 	dividerColour?: string;
 	logoColour?: string;
+	logoColourHover?: string;
 }
 
 const {
 	bgColour = "hsl(var(--navy))",
 	linkColour = "hsl(var(--white))",
+	linkColourHover = "hsl(var(--teal))",
+	linkColourFocus = "hsl(var(--teal))",
 	dividerColour = "hsl(var(--accent))",
 	logoColour = "hsl(var(--teal))",
+	logoColourHover = "hsl(var(--white))",
 } = Astro.props;
 ---
 
@@ -33,25 +39,43 @@ const {
 	</nav>
 </header>
 
-<style define:vars={{ bgColour, linkColour, dividerColour, logoColour }}>
+<style
+	define:vars={{ bgColour, linkColour, linkColourHover, linkColourFocus, dividerColour, logoColour, logoColourHover }}
+>
 	header {
 		/* background-color: hsl(var(--navy)); */
 		background-color: var(--bgColour);
 		/* border: 1px solid fuchsia; */
 		/* padding: 2rem; */
 
-		position: sticky;
-		top: 0px;
-
-		margin-block-start: calc(100vh - var(--header-height));
-		z-index: 3;
-
 		display: flex;
 		align-items: center;
 
-		padding-inline: 2rem;
+		padding-inline: 1rem;
 
 		min-height: 5rem;
+
+		position: sticky;
+		top: 0;
+		z-index: 3;
+	}
+
+	@media (min-width: 992px) {
+		header {
+			margin-block-start: calc(100vh - var(--header-height));
+			padding-inline: 2rem;
+		}
+	}
+
+	nav {
+		width: 100%;
+		display: flex;
+		flex-wrap: nowrap;
+	}
+
+	@media (min-width: 992px) {
+		nav {
+		}
 	}
 
 	nav ul {
@@ -59,12 +83,24 @@ const {
 		padding: 0;
 		display: flex;
 		align-items: center;
+		justify-content: end;
+		flex-wrap: nowrap;
 		gap: 1rem;
 		color: hsl(var(--white));
+		/* border: 1px solid fuchsia; */
+		margin-right: 0.5rem;
+		flex-basis: 100%;
+	}
+
+	@media (min-width: 992px) {
+		nav ul {
+			justify-content: start;
+			margin-right: 0;
+		}
 	}
 
 	nav li {
-		/* border: 1px solid fuchsia; */
+		/* border: 1px solid aqua; */
 	}
 
 	/* nav li:not(:first-of-type, :last-of-type)::after { */
@@ -77,22 +113,42 @@ const {
 
 	nav .main-nav__li--home {
 		color: hsl(var(--accent3));
+		/* force the li to shrink to the size of the icon */
+		/* flex-basis: 0; */
+		/* flex-shrink: 1; */
+		/* flex-grow: 0; */
+		margin-right: auto;
+		/* border-color: orange; */
+
+		/* we need to make the home li flex, probably because the icon is display block so it naturally aligns top? */
+		display: flex;
+		align-items: center;
+		/* justify-content: center; */
+	}
+
+	@media (min-width: 992px) {
+		nav .main-nav__li--home {
+			margin-right: 0;
+		}
 	}
 
 	nav li a {
 		/* color: hsl(var(--white)); */
+		/* NB! link colour here is a prop because header bgc varies */
 		color: var(--linkColour);
 		text-decoration: none;
 		padding-block-end: 0.3rem;
 		transition: all ease-in-out 250ms;
+		/* border: 1px solid yellow; */
+		border-bottom: 5px solid transparent;
 	}
 
 	nav li a:hover {
-		color: hsl(var(--teal));
+		color: var(--linkColourHover);
 	}
 
 	nav li a:focus-visible {
-		border-bottom: 5px solid hsl(var(--teal));
+		border-color: var(--linkColourFocus);
 		outline: none;
 	}
 
@@ -101,12 +157,25 @@ const {
 		color: var(--logoColour);
 		/* color: hsl(var(--accent)); */
 		font-size: 2rem;
-		margin-inline-end: 2rem;
+		/* margin-inline-end: 2rem; */
+	}
+
+	@media (min-width: 992px) {
+		nav .main-nav__li--home a {
+			margin-inline-end: 2rem;
+		}
 	}
 
 	nav .main-nav__li--home a:hover {
 		/* color: hsl(var(--white) / 88%); */
-		color: hsl(var(--white));
+		color: var(--logoColourHover);
 		/* border: none; */
+	}
+
+	/* set a width for the day-eight-logo home icon */
+	.day-eight-logo {
+		/* min-width: 3rem; */
+
+		/* min-height: 3rem; */
 	}
 </style>

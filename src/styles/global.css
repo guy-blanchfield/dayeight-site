@@ -243,9 +243,18 @@ it's doable, but difficult to test */
 .content-wrapper {
 	/* border: 1px solid fuchsia; */
 	/* margin-block-start: calc(100vh - var(--header-height)); */
-	position: relative;
+	/* position: relative; */
 	/* top: calc(100vh - var(--header-height)); */
-	z-index: 2;
+	/* z-index: 2; */
+
+	/* NB we only need the z-index on desktop, for the content to scroll over the top of the hero / intro */
+}
+
+@media (min-width: 992px) {
+	.content-wrapper {
+		position: relative;
+		z-index: 2;
+	}
 }
 
 /* for the fxed position first section / hero */

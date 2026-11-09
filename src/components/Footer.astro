@@ -17,7 +17,8 @@ import { Icon } from "astro-icon/components";
 						class="social-link"
 						><Icon name="social/linkedin-icon" class="social-icon" aria-hidden="true" /><span class="visually-hidden"
 							>LinkedIn</span
-						></a>
+						></a
+					>
 				</li>
 				<li>
 					<a
@@ -27,7 +28,8 @@ import { Icon } from "astro-icon/components";
 						class="social-link"
 						><Icon name="social/insta-icon" class="social-icon" aria-hidden="true" /><span class="visually-hidden"
 							>Instagram</span
-						></a>
+						></a
+					>
 				</li>
 				<li>
 					<a
@@ -37,7 +39,8 @@ import { Icon } from "astro-icon/components";
 						class="social-link"
 						><Icon name="social/x-icon" class="social-icon" aria-hidden="true" /><span class="visually-hidden"
 							>X (formerly Twitter)</span
-						></a>
+						></a
+					>
 				</li>
 			</ul>
 		</div>
@@ -51,6 +54,8 @@ import { Icon } from "astro-icon/components";
 		align-items: center;
 		padding: 1.5rem 0;
 		background-color: hsl(var(--accent2));
+		position: relative;
+		z-index: 3;
 	}
 
 	.social-links__social-links-list {

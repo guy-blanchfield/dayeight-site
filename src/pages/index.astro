@@ -27,10 +27,12 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	title="Day Eight - Design | Social | Creative"
 	description="Day Eight is a creative communication agency helping people with branding, social media and PR."
 >
+	<!-- <Header logoColour="hsl(var(--white) / 25%)" /> -->
+	<Header />
+
 	<!-- HomeHero is going to be position fixed so put it wherever seems most semantic in the document flow -->
 	<HomeHero />
 
-	<Header />
 	<!-- put any css to control min-height and flex-grow of body, main, header and footer in global.css -->
 
 	<!-- wrapper div for the content minus the hero, so we can margin everything past the hero, which will have position: fixed -->
@@ -133,7 +135,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 
 		/* margin-bottom so some of the bg image shows through */
 		/* trying this on contact instead, now there's the instagram feed - nah */
-		margin-bottom: 10rem;
+		/* margin-bottom: 10rem; */
 	}
 
 	.about-us > * {
@@ -183,7 +185,8 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 		max-width: 52ch;
 	}
 
-	@media (min-width: 700px) {
+	/* just do a single breakpoint at 992 for now, was 700 in the holding page */
+	@media (min-width: 992px) {
 		.about-us {
 			display: flex;
 			min-height: 35rem;
@@ -291,7 +294,7 @@ const emailObf = obfuscateEmail("hello@dayeightagency.co.uk", 156);
 	/* social-links stuff now in separate section */
 
 	/* contact flex stuff for desktop only */
-	@media (min-width: 700px) {
+	@media (min-width: 992px) {
 		.contact {
 			display: flex;
 			/* default flex-wrap is nowrap!!! */

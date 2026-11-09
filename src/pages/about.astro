@@ -29,7 +29,14 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 
 	<!-- Header (temp) -->
 
-	<Header bgColour="hsl(var(--babyblue))" linkColour="hsl(var(--navy))" logoColour="hsl(var(--white))" />
+	<Header
+		bgColour="hsl(var(--babyblue))"
+		linkColour="hsl(var(--navy))"
+		linkColourHover="hsl(var(--white))"
+		linkColourFocus="hsl(var(--white))"
+		logoColour="hsl(var(--white))"
+		logoColourHover="hsl(var(--navy))"
+	/>
 	<Main>
 		<!-- not sure there's any benefit to doing this content as components at the moment -->
 		<!-- maybe to keep the email obfuscation stuff tidy? -->
@@ -353,7 +360,7 @@ const ilikeyouBgImage = 'url(/images/day-eight-likes-you-960.jpg)';
 	}
 
 	.section__heading {
-		font-size: 3rem;
+		font-size: 2rem;
 		font-weight: lighter;
 		line-height: 1.2;
 		letter-spacing: -1px;
